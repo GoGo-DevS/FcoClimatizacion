@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}{{ project.title }} | FCOCLIMATIZACION{% endblock %}
+
+{% block content %}
+<section class="project-detail py-2 py-md-3 reveal">
+  <div class="container">
+    <div class="mb-3 reveal" data-reveal-delay="1">
+      <a href="/trabajos/" class="btn btn-sm btn-outline-primary btn-press">Volver a trabajos</a>
+    </div>
+
+    <div class="card border-0 detail-card overflow-hidden reveal" data-reveal-delay="2">
+      <div class="row g-0">
+        <div class="col-lg-7">
+          {% if project.has_images %}
+          <div class="detail-carousel-frame">
+            <div id="detailCarousel" class="carousel slide" data-bs-ride="false">
+              <div class="carousel-inner detail-carousel-bg">
+                {% for img in project.images_list %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                  <img src="{{ img.image.url }}" class="w-100 h-100" alt="{{ img.alt|default:project.title }}" loading="lazy">
+                </div>
+                {% endfor %}
+              </div>
+
+              {% if project.images_list|length > 1 %}
+              <button class="carousel-control-prev" type="button" data-bs-target="#detailCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#detailCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+              </button>
+              {% endif %}
+            </div>
+          </div>
+          {% else %}
+          <div class="ratio ratio-16x9 bg-light d-flex align-items-center justify-content-center text-secondary">Sin fotos</div>
+          {% endif %}
+        </div>
+
+        <div class="col-lg-5">
+          <div class="p-4 p-md-5 h-100 d-flex flex-column">
+            <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
+              <span class="badge rounded-pill text-bg-light border text-uppercase project-badge">
+                {% if "Instalacion" in project.title or "Instalación" in project.title %}Instalación{% elif "Mantencion" in project.title or "Mantención" in project.title %}Mantención{% else %}Proyecto{% endif %}
+              </span>
+              {% if project.brand %}<span class="small text-secondary">{{ project.brand }}</span>{% endif %}
+            </div>
+
+            <h1 class="h4 fw-bold mb-2">{{ project.title }}</h1>
+            <p class="text-secondary mb-3">
+              {{ project.get_project_type_display }}
+              {% if project.comuna %} · {{ project.comuna }}{% endif %}
+              {% if project.region %} · {{ project.region }}{% endif %}
+              {% if project.btu %} · {{ project.btu }} BTU{% endif %}
+            </p>
+
+            <div class="detail-description mb-4">
+              {% if project.description %}
+                <p class="mb-0">{{ project.description }}</p>
+              {% else %}
+                <p class="mb-0 text-secondary">Proyecto ejecutado por FCOCLIMATIZACION con estándar profesional.</p>
+              {% endif %}
+            </div>
+
+            <div class="mt-auto d-grid gap-2">
+              <a class="btn btn-success btn-press" target="_blank" href="https://wa.me/{{ WHATSAPP_PHONE_CLEAN }}?text=Hola%20quiero%20cotizar%20un%20trabajo%20similar%20a%20{{ project.title|urlencode }}.">Cotizar por WhatsApp</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

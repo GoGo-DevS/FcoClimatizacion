@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="360" viewBox="0 0 1400 360" fill="none">
+  <title>FCO Climatizacion Logo Flat Horizontal</title>
+  <g transform="translate(38 38)">
+    <circle cx="140" cy="112" r="94" stroke="#2563EB" stroke-width="16"/>
+    <path d="M48 194C78 226 112 242 140 242C168 242 202 226 232 194" stroke="#4F46E5" stroke-width="16" stroke-linecap="round"/>
+
+    <g stroke="#0F172A" stroke-width="12" stroke-linecap="round">
+      <path d="M140 52V172"/>
+      <path d="M88 82L192 142"/>
+      <path d="M192 82L88 142"/>
+    </g>
+    <g fill="#2563EB">
+      <circle cx="140" cy="52" r="10"/>
+      <circle cx="140" cy="172" r="10"/>
+      <circle cx="88" cy="82" r="10"/>
+      <circle cx="192" cy="142" r="10"/>
+      <circle cx="192" cy="82" r="10"/>
+      <circle cx="88" cy="142" r="10"/>
+      <circle cx="140" cy="112" r="10" fill="#4F46E5"/>
+    </g>
+  </g>
+
+  <g transform="translate(350 40)">
+    <text x="0" y="122" font-size="150" font-weight="800" letter-spacing="2.2" fill="#0F172A" font-family="Montserrat, Inter, Poppins, 'Segoe UI', Arial, sans-serif">FCO</text>
+    <text x="2" y="262" font-size="66" font-weight="700" letter-spacing="1.2" fill="#2563EB" font-family="Montserrat, Inter, Poppins, 'Segoe UI', Arial, sans-serif">CLIMATIZACIÓN</text>
+  </g>
+</svg>
