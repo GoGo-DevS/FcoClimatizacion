@@ -112,16 +112,35 @@ class ElImportadorNoInventaDatos(TestCase):
 
 class NoSePublicanCapturasDePantalla(TestCase):
 
-    def test_reconoce_una_captura_por_su_proporcion(self):
+    def test_reconoce_una_captura_vertical_por_su_proporcion(self):
         # Pantalla completa de un teléfono: 720x1600.
         self.assertTrue(es_captura_de_pantalla(imagen(720, 1600)))
-        self.assertTrue(es_captura_de_pantalla(imagen(1600, 720)))
+
+    def test_una_panoramica_horizontal_no_es_captura(self):
+        """Pasó de verdad: la regla aplicada a las dos orientaciones descartó 5
+        fotos buenas de salas de clase tomadas en panorámica."""
+        self.assertFalse(es_captura_de_pantalla(imagen(1600, 720)))
+        self.assertFalse(es_captura_de_pantalla(imagen(2000, 800)))
 
     def test_una_foto_vertical_normal_no_es_captura(self):
         # 3:4 y 9:16 son fotos de cámara, y son la mayoría del portafolio.
         self.assertFalse(es_captura_de_pantalla(imagen(1200, 1600)))
         self.assertFalse(es_captura_de_pantalla(imagen(1080, 1920)))
         self.assertFalse(es_captura_de_pantalla(imagen(1600, 1200)))
+
+    def test_reconoce_la_captura_por_las_barras_negras(self):
+        """Una captura recortada mantiene la barra de estado arriba y la de
+        navegación abajo: dos franjas negras planas."""
+        from PIL import Image as Im
+        import io as _io
+        captura = Im.new("RGB", (1000, 1300), (240, 240, 240))
+        for y in list(range(0, 60)) + list(range(1240, 1300)):
+            for x in range(0, 1000, 2):
+                captura.putpixel((x, y), (8, 8, 8))
+                captura.putpixel((x + 1, y), (8, 8, 8))
+        buffer = _io.BytesIO()
+        captura.save(buffer, format="JPEG", quality=95)
+        self.assertTrue(es_captura_de_pantalla(buffer.getvalue()))
 
     def test_un_archivo_ilegible_no_rompe_la_importacion(self):
         self.assertFalse(es_captura_de_pantalla(b"esto no es una imagen"))

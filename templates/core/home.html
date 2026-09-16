@@ -1,177 +1,95 @@
 {% extends "base.html" %}
 {% load static project_tags %}
-{% block title %}FCOCLIMATIZACION | Aire acondicionado e instalación{% endblock %}
 
 {% block content %}
 <div class="container">
-  <section class="home-hero p-4 p-md-5 rounded-4 border overflow-hidden reveal">
-    <div class="row align-items-center g-4">
-      <div class="col-lg-7 reveal" data-reveal-delay="1">
-        <span class="hero-chip badge rounded-pill mb-3">RM + Regiones · Factura · Garantía</span>
-        <h1 class="display-5 fw-bold mb-2">Climatización profesional para hogar y comercio</h1>
-        <p class="lead mb-3 hero-lead">
-          Instalación, mantención, diagnóstico y soporte técnico con atención ágil y estándar profesional.
+
+  {% comment %}
+    HERO. Antes era un bloque azul con una frase de agencia ("Climatización
+    profesional para hogar y comercio") y ninguna foto del trabajo. Ahora se ve
+    lo que hacen, con una foto real de una faena suya: es lo primero que un
+    cliente quiere comprobar antes de escribir.
+  {% endcomment %}
+  <section class="hero-nuevo reveal">
+    <div class="row align-items-center g-4 g-lg-5">
+      <div class="col-lg-6">
+        <span class="hero-chip">Región Metropolitana y comunas cercanas</span>
+        <h1 class="hero-titulo">Instalación y mantención de aire acondicionado</h1>
+        <p class="hero-bajada">
+          Instalamos, mantenemos y reparamos equipos split en casas, oficinas y locales.
+          Dejamos el equipo probado antes de irnos, con factura y garantía.
         </p>
-        <div class="d-flex gap-2 flex-wrap hero-actions">
-          <a class="btn btn-light btn-lg btn-press" target="_blank" href="https://wa.me/{{ WHATSAPP_PHONE_CLEAN }}?text=Hola%20quiero%20cotizar%20aire%20acondicionado.">Solicitar cotización</a>
-          <a class="btn btn-success btn-lg btn-press" target="_blank" href="https://wa.me/{{ WHATSAPP_PHONE_CLEAN }}?text=Hola%20quiero%20cotizar%20aire%20acondicionado.">Cotizar por WhatsApp</a>
+        <div class="hero-botones">
+          <a class="btn btn-success btn-lg btn-press" target="_blank" rel="noopener"
+             href="https://wa.me/{{ WHATSAPP_PHONE_CLEAN }}?text=Hola,%20quiero%20cotizar%20aire%20acondicionado.">
+            Cotizar por WhatsApp
+          </a>
+          <a class="btn btn-outline-primary btn-lg btn-press" href="#capacidad">
+            ¿Qué capacidad necesito?
+          </a>
         </div>
-        <p class="hero-meta small mb-0 mt-3">Cobertura en Santiago y comunas cercanas, con instalación certificada y garantía.</p>
+        <ul class="hero-datos">
+          <li><strong>Factura</strong> y garantía del trabajo</li>
+          <li>Diagnóstico <strong>antes</strong> de cotizar una reparación</li>
+          <li>Casas, oficinas, locales y colegios</li>
+        </ul>
       </div>
-      <div class="col-lg-5 reveal" data-reveal-delay="2">
-        <div class="hero-panel rounded-4 p-4">
-          <h2 class="h5 fw-bold mb-3">Servicios técnicos</h2>
-          <div class="row g-2">
-            <div class="col-6">
-              <div class="service-mini-card">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a4 4 0 0 1 4 4v2h2a3 3 0 0 1 0 6h-1.2a5 5 0 0 1-9.6 0H6a3 3 0 0 1 0-6h2V7a4 4 0 0 1 4-4Z"/></svg>
-                <span>Instalación</span>
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="service-mini-card">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v2H3V7Zm2 4h14v8H5v-8Zm3 2v4h2v-4H8Zm4 0v4h4v-4h-4Z"/></svg>
-                <span>Venta</span>
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="service-mini-card">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 3.3a1 1 0 0 1 1.4 0l4.6 4.6a1 1 0 0 1 0 1.4l-8.9 8.9-4.3 1.1 1.1-4.3 8.9-8.9ZM4 20h16v2H4v-2Z"/></svg>
-                <span>Reparación</span>
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="service-mini-card">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 2h2v3h-2V2Zm0 17h2v3h-2v-3ZM4.2 5.6l1.4-1.4L7.7 6.3 6.3 7.7 4.2 5.6Zm12.1 12.1 1.4-1.4 2.1 2.1-1.4 1.4-2.1-2.1ZM2 11h3v2H2v-2Zm17 0h3v2h-3v-2ZM6.3 16.3l1.4 1.4-2.1 2.1-1.4-1.4 2.1-2.1Zm12-12 1.4 1.4-2.1 2.1-1.4-1.4 2.1-2.1ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Z"/></svg>
-                <span>Mantención</span>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="col-lg-6">
+        <figure class="hero-figura mb-0">
+          {% comment %}
+            width/height explícitos: sin ellos el texto salta cuando carga la
+            imagen, y ese salto lo penaliza Google (CLS).
+          {% endcomment %}
+          <img src="{% static 'img/trabajos/aula-colegio.webp' %}"
+               width="1600" height="720" fetchpriority="high" decoding="async"
+               alt="Sala de clases con equipos de aire acondicionado instalados por FCO Climatización">
+        </figure>
       </div>
     </div>
   </section>
 
-  <section class="mt-5 reveal section-soft-bg">
-    <div class="d-flex justify-content-between align-items-end mb-3">
-      <div>
-        <h2 class="h3 fw-bold mb-1">¿Por qué elegirnos?</h2>
-        <p class="text-muted mb-0">Servicio confiable, trazable y pensado para continuidad operativa.</p>
-      </div>
+  {% comment %} SERVICIOS: cada uno con su propia página. {% endcomment %}
+  <section class="mt-5 pt-2 reveal" id="servicios">
+    <div class="titulo-seccion">
+      <span class="kicker">Servicios</span>
+      <h2 class="h3 fw-bold mb-1">Qué necesitas hacer con tu equipo</h2>
+      <p class="text-secondary mb-0">Cada servicio tiene su página con el detalle de lo que incluye.</p>
     </div>
-    <div class="row g-3">
-      <div class="col-12 col-sm-6 col-xl-3 reveal" data-reveal-delay="1">
-        <article class="why-grid-card">
-          <span class="why-grid-icon mb-3" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M12 2 2 7v6c0 5.2 3.5 9.9 10 11 6.5-1.1 10-5.8 10-11V7L12 2Zm-1.2 14.8-3.3-3.3 1.4-1.4 1.9 1.9 4.8-4.8 1.4 1.4-6.2 6.2Z"/></svg>
-          </span>
-          <h3 class="h6 fw-bold mb-1">Técnicos calificados</h3>
-          <p class="text-muted mb-0">Protocolos de instalación y mantención con revisión punto a punto.</p>
-        </article>
-      </div>
-      <div class="col-12 col-sm-6 col-xl-3 reveal" data-reveal-delay="2">
-        <article class="why-grid-card">
-          <span class="why-grid-icon mb-3" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 4h16v3H4V4Zm0 5h16v11H4V9Zm3 3v5h2v-5H7Zm4 0v5h6v-2h-4v-3h-2Z"/></svg>
-          </span>
-          <h3 class="h6 fw-bold mb-1">Factura y garantía</h3>
-          <p class="text-muted mb-0">Registro formal del servicio para respaldo técnico y postventa.</p>
-        </article>
-      </div>
-      <div class="col-12 col-sm-6 col-xl-3 reveal" data-reveal-delay="3">
-        <article class="why-grid-card">
-          <span class="why-grid-icon mb-3" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9h-2a7 7 0 1 1-7-7V3Zm1 1v8h7a8 8 0 0 0-7-8Z"/></svg>
-          </span>
-          <h3 class="h6 fw-bold mb-1">Respuesta rápida</h3>
-          <p class="text-muted mb-0">Coordinación ágil para evaluación, agenda y cierre de trabajo.</p>
-        </article>
-      </div>
-      <div class="col-12 col-sm-6 col-xl-3 reveal" data-reveal-delay="4">
-        <article class="why-grid-card">
-          <span class="why-grid-icon mb-3" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6Zm2 4h14v10H5V10Zm3 2v6h2v-2h4v2h2v-6H8Zm2 2h4v-2h-4v2Z"/></svg>
-          </span>
-          <h3 class="h6 fw-bold mb-1">Cobertura amplia</h3>
-          <p class="text-muted mb-0">Atención en RM y zonas cercanas para instalaciones y mantenciones.</p>
-        </article>
-      </div>
+    <div class="row g-3 g-md-4 mt-1">
+      {% for s in servicios %}
+        <div class="col-12 col-md-6">
+          <a class="servicio-card servicio-card--enlace d-block h-100" href="{% url 'services:detail' s.slug %}">
+            <h3 class="h5 fw-bold mb-2">{{ s.nombre }}</h3>
+            <p class="text-secondary mb-2">{{ s.bajada }}</p>
+            <span class="enlace-flecha">Ver detalle</span>
+          </a>
+        </div>
+      {% endfor %}
     </div>
   </section>
 
-  <section class="mt-5 reveal section-soft-bg">
-    <div class="process-grid p-4 p-md-4">
-      <h2 class="h3 fw-bold mb-3">Proceso de trabajo</h2>
-      <div class="row g-3">
-        <div class="col-12 col-md-6 col-xl-4 reveal" data-reveal-delay="1">
-          <article class="process-step">
-            <span class="process-count mb-2">01</span>
-            <strong class="d-block mb-1">Solicitud</strong>
-            <p class="text-muted small mb-0">Recibimos tu requerimiento y lo dejamos listo para continuar por WhatsApp.</p>
-          </article>
-        </div>
-        <div class="col-12 col-md-6 col-xl-4 reveal" data-reveal-delay="2">
-          <article class="process-step">
-            <span class="process-count mb-2">02</span>
-            <strong class="d-block mb-1">Diagnóstico</strong>
-            <p class="text-muted small mb-0">Levantamos condiciones del espacio y capacidad requerida.</p>
-          </article>
-        </div>
-        <div class="col-12 col-md-6 col-xl-4 reveal" data-reveal-delay="3">
-          <article class="process-step">
-            <span class="process-count mb-2">03</span>
-            <strong class="d-block mb-1">Propuesta</strong>
-            <p class="text-muted small mb-0">Entregamos recomendación técnica y costo estimado.</p>
-          </article>
-        </div>
-        <div class="col-12 col-md-6 col-xl-4 reveal" data-reveal-delay="1">
-          <article class="process-step">
-            <span class="process-count mb-2">04</span>
-            <strong class="d-block mb-1">Agenda</strong>
-            <p class="text-muted small mb-0">Coordinamos fecha y ventana de atención confirmada.</p>
-          </article>
-        </div>
-        <div class="col-12 col-md-6 col-xl-4 reveal" data-reveal-delay="2">
-          <article class="process-step">
-            <span class="process-count mb-2">05</span>
-            <strong class="d-block mb-1">Ejecución</strong>
-            <p class="text-muted small mb-0">Instalación o mantención con checklist técnico de calidad.</p>
-          </article>
-        </div>
-        <div class="col-12 col-md-6 col-xl-4 reveal" data-reveal-delay="3">
-          <article class="process-step">
-            <span class="process-count mb-2">06</span>
-            <strong class="d-block mb-1">Cierre</strong>
-            <p class="text-muted small mb-0">Entrega final con recomendaciones de uso y seguimiento.</p>
-          </article>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="mt-5">
+  {% comment %} CALCULADORA: se conserva, es lo mejor que tenía el sitio. {% endcomment %}
+  <section class="mt-5 reveal" id="capacidad">
     <div class="row g-4">
-      <div class="col-lg-7 reveal" data-reveal-delay="1">
-        <div class="card border-0 shadow-sm rounded-4">
+      <div class="col-lg-7">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
           <div class="card-body p-4 p-md-5">
             <h2 class="h4 fw-bold mb-1">¿Qué capacidad necesito?</h2>
-            <p class="text-muted mb-4">Estimación rápida según m². Para un cálculo exacto realizamos visita técnica.</p>
+            <p class="text-muted mb-4">Estimación rápida según m². Para el cálculo exacto hacemos visita técnica.</p>
 
             <div class="row g-3 align-items-end">
               <div class="col-md-4">
-                <label class="form-label">Metros²</label>
+                <label class="form-label" for="m2">Metros²</label>
                 <input id="m2" type="number" min="1" class="form-control form-control-lg" placeholder="Ej: 18">
               </div>
-
               <div class="col-md-4">
-                <label class="form-label">Uso</label>
+                <label class="form-label" for="uso">Uso</label>
                 <select id="uso" class="form-select form-select-lg">
                   <option value="normal" selected>Normal</option>
-                  <option value="caluroso">Muy caluroso / Sol directo</option>
+                  <option value="caluroso">Muy caluroso / sol directo</option>
                   <option value="muchas_personas">Muchas personas / equipos</option>
                 </select>
               </div>
-
               <div class="col-md-4">
                 <button id="btnCalc" class="btn btn-primary btn-lg w-100 btn-press" type="button">Calcular</button>
               </div>
@@ -183,179 +101,86 @@
                   <div class="text-muted small">Recomendación</div>
                   <div class="h4 fw-bold mb-0" id="resultado">—</div>
                 </div>
-                <a id="btnCotizarConBtu" class="btn btn-success btn-lg btn-press disabled" target="_blank" href="https://wa.me/{{ WHATSAPP_PHONE_CLEAN }}?text=Hola%20quiero%20cotizar%20aire%20acondicionado.">Cotizar con estos datos</a>
+                <a id="btnCotizarConBtu" class="btn btn-success btn-lg btn-press disabled" target="_blank" rel="noopener"
+                   href="https://wa.me/{{ WHATSAPP_PHONE_CLEAN }}?text=Hola,%20quiero%20cotizar%20aire%20acondicionado.">
+                  Cotizar con estos datos
+                </a>
               </div>
               <div class="text-muted small mt-2">
-                * Referencia inicial. Factores como altura, aislación, orientación y distancia de cañerías pueden ajustar la recomendación final.
+                * Referencia inicial. La altura, la aislación, la orientación y la distancia
+                de cañerías pueden cambiar la recomendación final.
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="col-lg-5 reveal" data-reveal-delay="2">
+      <div class="col-lg-5">
         <div class="card border-0 shadow-sm rounded-4 h-100">
           <div class="card-body p-4">
-            <h3 class="h5 fw-bold mb-3">Marcas que trabajamos</h3>
-            <div class="d-flex flex-wrap gap-2">
-              <span class="badge text-bg-light border">Clark</span>
-              <span class="badge text-bg-light border">Kendal</span>
-              <span class="badge text-bg-light border">Anwo</span>
-              <span class="badge text-bg-light border">y más…</span>
-            </div>
-            <hr class="my-4">
-            <h3 class="h5 fw-bold mb-2">Respuesta rápida</h3>
-            <p class="text-muted mb-3">Confirmación de solicitud y seguimiento del servicio en cada etapa.</p>
-            <a class="btn btn-outline-primary w-100 mb-2 btn-press" target="_blank" href="https://wa.me/{{ WHATSAPP_PHONE_CLEAN }}?text=Hola%20quiero%20cotizar%20aire%20acondicionado.">Cotizar por WhatsApp</a>
-            <a class="btn btn-success w-100 btn-press" target="_blank" href="https://wa.me/{{ WHATSAPP_PHONE_CLEAN }}?text=Hola%20quiero%20cotizar%20aire%20acondicionado.">WhatsApp directo</a>
+            <h2 class="h5 fw-bold mb-3">Cómo trabajamos</h2>
+            <ol class="pasos-lista mb-4">
+              <li><strong>Nos escribes</strong> y cuentas qué necesitas y en qué comuna estás.</li>
+              <li><strong>Coordinamos</strong> la visita o el diagnóstico.</li>
+              <li><strong>Cotizamos</strong> con el detalle de lo que incluye.</li>
+              <li><strong>Ejecutamos</strong> y entregamos el equipo probado.</li>
+            </ol>
+            <a class="btn btn-success w-100 btn-press" target="_blank" rel="noopener"
+               href="https://wa.me/{{ WHATSAPP_PHONE_CLEAN }}?text=Hola,%20quiero%20cotizar%20aire%20acondicionado.">
+              Escribir por WhatsApp
+            </a>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="mt-5 reveal section-soft-bg">
-    <div class="d-flex align-items-end justify-content-between mb-3">
+  {% comment %}
+    PORTAFOLIO. Hasta el 16-09-2026 mostraba selfies de clientes y capturas de
+    Instagram; ahora son fotos del trabajo, sin caras.
+  {% endcomment %}
+  <section class="mt-5 reveal">
+    <div class="titulo-seccion d-flex align-items-end justify-content-between flex-wrap gap-2">
       <div>
-        <span class="portfolio-kicker">Portafolio</span>
-        <h2 class="h4 fw-bold mb-1">Trabajos realizados</h2>
-        <p class="text-muted mb-0">Instalaciones y mantenciones reales con factura y garantía.</p>
+        <span class="kicker">Trabajos</span>
+        <h2 class="h3 fw-bold mb-1">Instalaciones y mantenciones que hemos hecho</h2>
+        <p class="text-secondary mb-0">Fotos de trabajos reales, no de catálogo.</p>
       </div>
-      <a href="/trabajos/" class="btn btn-outline-primary btn-press">Ver todos</a>
+      <a href="{% url 'projects:list' %}" class="btn btn-outline-primary btn-press">Ver todos</a>
     </div>
-    <div class="row g-3">
+    <div class="row g-3 mt-1">
       {% for p in featured_projects %}
-        {% if p|is_segmented_project %}
-          {% with img=p|safe_cover %}
-          <div class="col-6 col-md-3">
-            <a href="/trabajos/" class="text-decoration-none text-dark">
-              <article class="card project-card border-0 h-100 reveal" data-reveal-delay="{% cycle '1' '2' '3' '4' %}">
-                <div class="ratio ratio-4x3 rounded-top overflow-hidden project-cover">
-                  {% if img %}
-                    <img src="{{ img.image.url }}" class="w-100 h-100" style="object-fit: cover;" loading="lazy" alt="{{ p.title }}">
-                  {% endif %}
-                </div>
-                <div class="card-body p-3">
-                  <span class="badge rounded-pill text-bg-light border text-uppercase project-badge mb-2 d-inline-block">
-                    {% if "Instalacion" in p.title or "Instalación" in p.title %}Instalación{% elif "Mantencion" in p.title or "Mantención" in p.title %}Mantención{% else %}Proyecto{% endif %}
-                  </span>
-                  <div class="fw-semibold small">{{ p.title }}</div>
-                  <div class="text-muted small">{{ p.comuna }}{% if p.brand %} · {{ p.brand }}{% endif %}</div>
-                </div>
-              </article>
+        {% with img=p|safe_cover %}
+          {% if img %}
+          <div class="col-6 col-lg-4">
+            <a class="trabajo-card" href="{% url 'projects:detail' p.id %}">
+              <img src="{{ img.image.url }}" alt="{{ img.alt|default:p.title }}"
+                   loading="lazy" decoding="async">
+              <span class="trabajo-card__pie">{{ p.title }}</span>
             </a>
           </div>
-          {% endwith %}
-        {% endif %}
-      {% empty %}
-        <div class="col-12 text-muted">Aún no hay trabajos destacados.</div>
+          {% endif %}
+        {% endwith %}
       {% endfor %}
     </div>
   </section>
 
-  <section class="mt-5 reveal section-soft-bg">
-    <div class="faq-panel p-3 p-md-4">
-      <h2 class="h3 fw-bold mb-3">Preguntas frecuentes</h2>
-      <div class="accordion accordion-flush" id="faqHome">
-        <div class="accordion-item">
-          <h3 class="accordion-header">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqOne" aria-expanded="true" aria-controls="faqOne">
-              ¿Qué incluye una instalación estándar?
-            </button>
-          </h3>
-          <div id="faqOne" class="accordion-collapse collapse show" data-bs-parent="#faqHome">
-            <div class="accordion-body text-muted">Montaje de unidad interior y exterior, conexión, prueba operativa y recomendaciones básicas de uso.</div>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <h3 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqTwo" aria-expanded="false" aria-controls="faqTwo">
-              ¿Cada cuánto tiempo conviene la mantención?
-            </button>
-          </h3>
-          <div id="faqTwo" class="accordion-collapse collapse" data-bs-parent="#faqHome">
-            <div class="accordion-body text-muted">En uso normal se recomienda mantención preventiva cada 6 a 12 meses según carga y condiciones del espacio.</div>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <h3 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqThree" aria-expanded="false" aria-controls="faqThree">
-              ¿Realizan diagnóstico antes de cotizar?
-            </button>
-          </h3>
-          <div id="faqThree" class="accordion-collapse collapse" data-bs-parent="#faqHome">
-            <div class="accordion-body text-muted">Sí. Evaluamos m², aislación, orientación y tipo de uso para recomendar capacidad y equipo adecuados.</div>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <h3 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqFour" aria-expanded="false" aria-controls="faqFour">
-              ¿Atienden en regiones?
-            </button>
-          </h3>
-          <div id="faqFour" class="accordion-collapse collapse" data-bs-parent="#faqHome">
-            <div class="accordion-body text-muted">Atendemos RM y zonas cercanas. Para otras áreas se coordina según factibilidad y agenda.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
+  {% comment %} FAQ visible: es la misma que va marcada como FAQPage. {% endcomment %}
   <section class="mt-5 reveal">
-    <div class="final-cta p-4 p-md-5 text-center">
-      <h2 class="h3 fw-bold mb-2">¿Listo para cotizar tu proyecto?</h2>
-      <p class="text-muted mb-4">Te respondemos con una propuesta clara para instalación o mantención de climatización.</p>
-      <div class="d-flex gap-2 justify-content-center flex-wrap">
-        <a class="btn btn-primary btn-lg btn-press" target="_blank" href="https://wa.me/{{ WHATSAPP_PHONE_CLEAN }}?text=Hola%20quiero%20cotizar%20aire%20acondicionado.">Solicitar cotización</a>
-        <a class="btn btn-success btn-lg btn-press" target="_blank" href="https://wa.me/{{ WHATSAPP_PHONE_CLEAN }}?text=Hola%20quiero%20cotizar%20aire%20acondicionado.">Hablar por WhatsApp</a>
-      </div>
+    <div class="titulo-seccion">
+      <span class="kicker">Preguntas frecuentes</span>
+      <h2 class="h3 fw-bold mb-0">Lo que más nos preguntan</h2>
+    </div>
+    <div class="faq-lista mt-3">
+      {% for pregunta, respuesta in preguntas %}
+        <details class="faq-item"{% if forloop.first %} open{% endif %}>
+          <summary>{{ pregunta }}</summary>
+          <p class="mb-0">{{ respuesta }}</p>
+        </details>
+      {% endfor %}
     </div>
   </section>
+
+  {% include "core/_cta.html" %}
 </div>
-
-<script>
-  function estimateBTU(m2, uso) {
-    let btu = m2 * 600;
-    if (uso === "caluroso") btu *= 1.15;
-    if (uso === "muchas_personas") btu *= 1.2;
-
-    const steps = [9000, 12000, 18000, 24000, 30000, 36000, 48000];
-    let best = steps[steps.length - 1];
-    for (const step of steps) {
-      if (btu <= step) {
-        best = step;
-        break;
-      }
-    }
-    return best;
-  }
-
-  const m2Input = document.getElementById("m2");
-  const usoSelect = document.getElementById("uso");
-  const btnCalc = document.getElementById("btnCalc");
-  const resultNode = document.getElementById("resultado");
-  const quoteBtn = document.getElementById("btnCotizarConBtu");
-  const whatsappPhone = "{{ WHATSAPP_PHONE_CLEAN }}";
-
-  if (m2Input && usoSelect && btnCalc && resultNode && quoteBtn) {
-    btnCalc.addEventListener("click", () => {
-      const m2 = parseFloat(m2Input.value);
-      const uso = usoSelect.value;
-
-      if (!m2 || m2 <= 0) {
-        resultNode.textContent = "Ingresa m² válidos";
-        quoteBtn.classList.add("disabled");
-        quoteBtn.href = `https://wa.me/${whatsappPhone}?text=Hola%20quiero%20cotizar%20aire%20acondicionado.`;
-        return;
-      }
-
-      const btu = estimateBTU(m2, uso);
-      resultNode.textContent = `${btu.toLocaleString("es-CL")} BTU (estimado)`;
-
-      const msg = encodeURIComponent(`Hola! Quiero cotizar aire acondicionado. Estimación: ${m2} m², uso ${uso}, recomendado ${btu} BTU.`);
-      quoteBtn.classList.remove("disabled");
-      quoteBtn.href = `https://wa.me/${whatsappPhone}?text=${msg}`;
-    });
-  }
-</script>
 {% endblock %}

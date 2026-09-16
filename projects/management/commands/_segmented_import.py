@@ -47,16 +47,92 @@ FAMILIAS = {
 
 
 def es_captura_de_pantalla(datos: bytes) -> bool:
-    """True si la imagen parece un pantallazo y no una foto del trabajo."""
+    """True si la imagen parece un pantallazo y no una foto del trabajo.
+
+    Dos señales, porque con una sola se colaban capturas:
+
+    1. LA PROPORCION. Una pantalla completa de telefono es 720x1600 (2.22);
+       una foto de camara es 3:4 o 9:16 (1.78).
+    2. LAS FRANJAS. Recortada o no, una captura de Instagram casi siempre
+       conserva una banda plana arriba (barra de estado) o abajo (barra de
+       navegacion): una franja de color casi uniforme, muy oscura o muy clara.
+       Una foto real no tiene bandas planas en los bordes.
+    """
     try:
         with Image.open(BytesIO(datos)) as img:
             ancho, alto = img.size
+            gris = img.convert("L")
+            franja_alto = max(2, int(alto * 0.045))
+            arriba = gris.crop((0, 0, ancho, franja_alto))
+            abajo = gris.crop((0, alto - franja_alto, ancho, alto))
     except Exception:
         return False
     if not ancho or not alto:
         return False
-    largo, corto = max(ancho, alto), min(ancho, alto)
-    return (largo / corto) >= RATIO_CAPTURA
+
+    # La proporcion solo delata a las VERTICALES: una captura de telefono es
+    # vertical y alargada. Una foto horizontal muy ancha es una panoramica, y
+    # con la regla aplicada a las dos orientaciones se descartaban 5 fotos
+    # buenas de salas de clase tomadas en panoramica.
+    if alto > ancho and (alto / ancho) >= RATIO_CAPTURA:
+        return True
+
+    def franja_negra(franja):
+        datos_franja = list(franja.getdata())
+        if not datos_franja:
+            return False
+        media = sum(datos_franja) / len(datos_franja)
+        varianza = sum((v - media) ** 2 for v in datos_franja) / len(datos_franja)
+        return varianza < 90 and media < 42
+
+    # Se exige NEGRO arriba Y abajo: es la barra de estado y la de navegacion.
+    #
+    # ⚠️ La primera version tambien aceptaba franjas MUY CLARAS, y eso descarto
+    # 5 fotos buenas de salas de clase: el techo blanco arriba y el piso claro
+    # abajo pasaban por "franja plana". Con solo lo oscuro, esas 5 vuelven.
+    return franja_negra(arriba) and franja_negra(abajo)
+
+
+def es_collage(datos: bytes) -> bool:
+    """True si la imagen es un COLLAGE armado en el teléfono.
+
+    En el material del cliente hay mosaicos de 20 fotitos con separaciones
+    blancas. Publicados en el portafolio se ven como un error: en la tarjeta no
+    se distingue ninguno de los trabajos.
+
+    La señal es la REJILLA: varias filas completas casi blancas Y varias
+    columnas completas casi blancas, separadas entre si. Una pared blanca puede
+    dar filas claras, pero no da tambien columnas claras repartidas.
+    """
+    try:
+        with Image.open(BytesIO(datos)) as img:
+            gris = img.convert("L").resize((160, 160))
+    except Exception:
+        return False
+
+    pixeles = gris.load()
+
+    def lineas_claras(es_fila):
+        claras = []
+        for i in range(160):
+            valores = sorted(pixeles[j, i] if es_fila else pixeles[i, j] for j in range(160))
+            # Percentil 5 y no el minimo: en el collage las separaciones traen
+            # algun pixel oscuro del borde de una foto, y con min() no se
+            # detectaba ninguna linea.
+            if valores[8] > 225:
+                claras.append(i)
+        # Se agrupan las contiguas: una franja gruesa es UNA separacion, no diez.
+        grupos = 0
+        anterior = -5
+        for i in claras:
+            if i - anterior > 2:
+                grupos += 1
+            anterior = i
+        return grupos
+
+    # Dos separaciones en cada sentido ya son una rejilla de 3x3 fotos. Con
+    # tres no se detectaba ninguno de los tres collages reales del material.
+    return lineas_claras(True) >= 2 and lineas_claras(False) >= 2
 
 
 def _collect_images(zip_path: Path):
@@ -67,7 +143,8 @@ def _collect_images(zip_path: Path):
         for name in sorted(zip_file.namelist()):
             if Path(name).suffix.lower() not in ALLOWED_EXTS:
                 continue
-            if es_captura_de_pantalla(zip_file.read(name)):
+            datos = zip_file.read(name)
+            if es_captura_de_pantalla(datos) or es_collage(datos):
                 descartadas += 1
                 continue
             names.append(name)

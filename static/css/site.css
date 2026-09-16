@@ -854,3 +854,191 @@ textarea.form-control:focus {
     padding: 0.8rem;
   }
 }
+
+/* =====================================================================
+   Rediseño 16-09-2026
+   El sitio tenía un hero azul sin fotos, servicios en tarjetas de dos
+   líneas sin página propia y 431 palabras en total. Esto es lo que
+   sostiene la estructura nueva: hero con foto real, servicios enlazados,
+   trabajos y preguntas. Se reusan las variables que ya existían.
+   ===================================================================== */
+
+.kicker {
+  display: inline-block;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--fco-blue);
+  margin-bottom: .35rem;
+}
+
+.titulo-seccion { margin-bottom: 1.1rem; }
+.lead-corto { max-width: 62ch; font-size: 1.05rem; }
+
+/* ---- Hero ---- */
+.hero-nuevo { padding: 2.2rem 0 .5rem; }
+.hero-chip {
+  display: inline-block;
+  background: var(--fco-blue-soft);
+  color: var(--fco-navy);
+  border: 1px solid var(--fco-border);
+  border-radius: 99px;
+  padding: .35rem .85rem;
+  font-size: .82rem;
+  font-weight: 600;
+  margin-bottom: .9rem;
+}
+.hero-titulo {
+  font-size: clamp(1.85rem, 4.2vw, 3rem);
+  line-height: 1.12;
+  font-weight: 800;
+  color: var(--fco-text);
+  margin-bottom: .8rem;
+  /* Con line-height 1.1 y tildes, la "ó" se corta arriba. */
+  padding-top: .1rem;
+}
+.hero-bajada {
+  font-size: 1.08rem;
+  color: var(--fco-muted);
+  max-width: 54ch;
+  margin-bottom: 1.3rem;
+}
+.hero-botones { display: flex; flex-wrap: wrap; gap: .7rem; margin-bottom: 1.4rem; }
+.hero-datos { list-style: none; padding: 0; margin: 0; display: grid; gap: .45rem; }
+.hero-datos li {
+  position: relative;
+  padding-left: 1.6rem;
+  color: var(--fco-text);
+  font-size: .95rem;
+}
+.hero-datos li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: .45em;
+  width: .7rem; height: .7rem;
+  border-radius: 50%;
+  background: var(--fco-blue);
+}
+.hero-figura {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  aspect-ratio: 4 / 3;
+}
+.hero-figura img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ---- Servicios ---- */
+.servicio-card {
+  background: var(--fco-white);
+  border: 1px solid var(--fco-border);
+  border-radius: var(--radius-md);
+  padding: 1.35rem;
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+}
+.servicio-card--enlace { text-decoration: none; color: inherit; }
+.servicio-card--enlace:hover,
+.servicio-card--enlace:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  text-decoration: none;
+  color: inherit;
+}
+.servicio-card h2 a, .servicio-card h3 a { color: var(--fco-text); text-decoration: none; }
+.servicio-lista { list-style: none; padding: 0; margin: 0; display: grid; gap: .35rem; }
+.servicio-lista li {
+  position: relative; padding-left: 1.4rem;
+  color: var(--fco-muted); font-size: .93rem;
+}
+.servicio-lista li::before {
+  content: "✓"; position: absolute; left: 0; color: var(--fco-blue); font-weight: 700;
+}
+.enlace-flecha { color: var(--fco-blue); font-weight: 600; font-size: .95rem; }
+.enlace-flecha::after { content: " →"; }
+
+/* ---- Listas de las páginas de servicio ---- */
+.lista-check, .lista-punto { list-style: none; padding: 0; margin: 0; display: grid; gap: .55rem; }
+.lista-check li, .lista-punto li { position: relative; padding-left: 1.7rem; }
+.lista-check li::before {
+  content: "✓"; position: absolute; left: 0; top: -.05em;
+  color: #1c8a4a; font-weight: 800;
+}
+.lista-punto li::before {
+  content: ""; position: absolute; left: .25rem; top: .55em;
+  width: .5rem; height: .5rem; border-radius: 50%; background: var(--fco-blue);
+}
+.pasos-lista { padding-left: 1.1rem; display: grid; gap: .5rem; color: var(--fco-muted); }
+.pasos-lista strong { color: var(--fco-text); }
+
+.figura-servicio {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  margin: 0;
+  aspect-ratio: 4 / 3;
+}
+.figura-servicio img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.panel-lateral {
+  background: var(--fco-surface);
+  border: 1px solid var(--fco-border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+}
+
+/* ---- Trabajos ---- */
+.trabajo-card {
+  display: block;
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  aspect-ratio: 4 / 3;
+  background: var(--fco-surface);
+}
+.trabajo-card img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform var(--dur-base) ease;
+}
+.trabajo-card:hover img { transform: scale(1.04); }
+.trabajo-card__pie {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: 1.6rem .8rem .6rem;
+  color: #fff; font-size: .85rem; font-weight: 600;
+  background: linear-gradient(to top, rgba(6, 25, 44, .82), rgba(6, 25, 44, 0));
+}
+
+/* ---- Preguntas ---- */
+.faq-lista { display: grid; gap: .6rem; }
+.faq-item {
+  background: var(--fco-white);
+  border: 1px solid var(--fco-border);
+  border-radius: var(--radius-sm);
+  padding: .9rem 1.1rem;
+}
+.faq-item summary {
+  cursor: pointer; font-weight: 600; color: var(--fco-text); list-style: none;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after { content: " +"; color: var(--fco-blue); font-weight: 700; }
+.faq-item[open] summary::after { content: " −"; }
+.faq-item p { margin-top: .6rem; color: var(--fco-muted); }
+
+/* ---- Cierre ---- */
+.cta-final {
+  background: linear-gradient(135deg, var(--fco-navy), var(--fco-blue));
+  color: #fff;
+}
+.cta-final .cta-texto { color: rgba(255, 255, 255, .88); max-width: 60ch; }
+.cta-final .btn-outline-light { border-color: rgba(255, 255, 255, .6); }
+
+/* ---- Migas ---- */
+.migas { font-size: .85rem; color: var(--fco-muted); }
+.migas a { color: var(--fco-blue); text-decoration: none; }
+.migas a:hover { text-decoration: underline; }
+
+@media (max-width: 575.98px) {
+  .hero-nuevo { padding-top: 1.2rem; }
+  .hero-botones .btn { width: 100%; }
+  .cta-final { padding: 1.5rem !important; }
+}

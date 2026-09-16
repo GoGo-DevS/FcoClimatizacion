@@ -1,14 +1,39 @@
-{% load static %}
+{% load static seo_extras %}
 <!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}FCOCLIMATIZACION{% endblock %}</title>
+  <title>{% block title %}{{ meta_title|default:"Aire acondicionado en Santiago | FCO Climatización" }}{% endblock %}</title>
+  {% comment %}
+    Sin meta description Google inventa el resumen tomando cualquier frase de la
+    página; sin canonical, la misma página con y sin "www" compite consigo misma;
+    y sin Open Graph el enlace se comparte por WhatsApp como una URL pelada.
+  {% endcomment %}
+  <meta name="description" content="{% block meta_description %}{{ meta_description|default:"Instalación, mantención y reparación de aire acondicionado en la Región Metropolitana y comunas cercanas. Con factura y garantía." }}{% endblock %}">
+  <link rel="canonical" href="{% block canonical %}{{ canonical|default:request.build_absolute_uri }}{% endblock %}">
   <meta name="theme-color" content="#0b3a66">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="FCO Climatización">
+  <meta property="og:locale" content="es_CL">
+  <meta property="og:title" content="{{ meta_title|default:'Aire acondicionado en Santiago | FCO Climatización' }}">
+  <meta property="og:description" content="{{ meta_description|default:'Instalación, mantención y reparación de aire acondicionado con factura y garantía.' }}">
+  <meta property="og:url" content="{{ canonical|default:request.build_absolute_uri }}">
+  <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/og-fco.jpg' %}{% endblock %}">
+  <meta name="twitter:card" content="summary_large_image">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="{% static 'img/icon-512.png' %}">
+
+  {% comment %}
+    Datos estructurados: es lo que le dice a Google que esto es una empresa de
+    climatización que atiende una zona, y no un sitio cualquiera.
+  {% endcomment %}
+  <script type="application/ld+json">{{ schema_negocio|safe }}</script>
+  {% for schema in schema_extra %}<script type="application/ld+json">{{ schema|como_json }}</script>
+  {% endfor %}
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+  <nav aria-label="Ruta" class="migas py-3">
+    <a href="/">Inicio</a> <span aria-hidden="true">›</span>
+    <a href="{% url 'services:index' %}">Servicios</a> <span aria-hidden="true">›</span>
+    <span>{{ s.nombre }}</span>
+  </nav>
+
+  <div class="row g-4 g-lg-5 align-items-start">
+    <div class="col-lg-7">
+      <span class="kicker">{{ s.nombre }}</span>
+      <h1 class="h2 fw-bold mb-2">{{ s.encabezado }}</h1>
+      <p class="lead-corto text-secondary">{{ s.bajada }}</p>
+
+      <div class="d-flex flex-wrap gap-2 my-3">
+        <a class="btn btn-success btn-press" target="_blank" rel="noopener"
+           href="https://wa.me/{{ WHATSAPP_PHONE_CLEAN }}?text=Hola,%20quiero%20cotizar:%20{{ s.nombre|urlencode }}">
+          Cotizar por WhatsApp
+        </a>
+        <a class="btn btn-outline-primary btn-press" href="tel:{{ WHATSAPP_PHONE }}">Llamar</a>
+      </div>
+
+      <h2 class="h5 fw-bold mt-4 mb-2">Qué incluye</h2>
+      <ul class="lista-check">
+        {% for item in s.incluye %}<li>{{ item }}</li>{% endfor %}
+      </ul>
+
+      <h2 class="h5 fw-bold mt-4 mb-2">Para quién es</h2>
+      <ul class="lista-punto">
+        {% for item in s.para_quien %}<li>{{ item }}</li>{% endfor %}
+      </ul>
+    </div>
+
+    <div class="col-lg-5">
+      <figure class="figura-servicio mb-3">
+        <img src="{% static 'img/trabajos/'|add:imagen %}" width="1000" height="750"
+             alt="{{ s.nombre }} realizada por FCO Climatización" loading="lazy" decoding="async">
+      </figure>
+      <aside class="panel-lateral">
+        <h2 class="h6 fw-bold mb-2">Cómo trabajamos</h2>
+        <ol class="pasos-lista mb-3">
+          <li>Nos escribes y cuentas qué necesitas.</li>
+          <li>Coordinamos la visita o el diagnóstico.</li>
+          <li>Recibes la cotización con el detalle.</li>
+          <li>Ejecutamos el trabajo y lo entregamos probado.</li>
+        </ol>
+        <p class="small text-secondary mb-0">
+          Cobertura en la Región Metropolitana y comunas cercanas. Trabajos con
+          factura y garantía.
+        </p>
+      </aside>
+    </div>
+  </div>
+
+  <section class="mt-5">
+    <h2 class="h4 fw-bold mb-3">Preguntas frecuentes</h2>
+    <div class="faq-lista">
+      {% for pregunta, respuesta in s.preguntas %}
+        <details class="faq-item">
+          <summary>{{ pregunta }}</summary>
+          <p class="mb-0">{{ respuesta }}</p>
+        </details>
+      {% endfor %}
+    </div>
+  </section>
+
+  {% if relacionados %}
+  <section class="mt-5">
+    <h2 class="h5 fw-bold mb-3">También te puede servir</h2>
+    <div class="row g-3">
+      {% for r in relacionados %}
+        <div class="col-12 col-md-6">
+          <a class="servicio-card servicio-card--enlace d-block h-100" href="{% url 'services:detail' r.slug %}">
+            <span class="h6 fw-bold d-block mb-1">{{ r.nombre }}</span>
+            <span class="text-secondary small">{{ r.bajada }}</span>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% include "core/_cta.html" %}
+</div>
+{% endblock %}

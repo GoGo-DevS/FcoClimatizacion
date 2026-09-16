@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+  <nav aria-label="Ruta" class="migas py-3">
+    <a href="/">Inicio</a> <span aria-hidden="true">›</span> <span>Servicios</span>
+  </nav>
+
+  <header class="mb-4">
+    <span class="kicker">Servicios</span>
+    <h1 class="h2 fw-bold mb-2">Qué hacemos con tu aire acondicionado</h1>
+    <p class="text-secondary mb-0 lead-corto">
+      Instalación, mantención, reparación y venta de equipos en la Región Metropolitana
+      y comunas cercanas. Todo con factura y garantía del trabajo.
+    </p>
+  </header>
+
+  <div class="row g-3 g-md-4">
+    {% for s in servicios %}
+      <div class="col-12 col-md-6">
+        <article class="servicio-card h-100">
+          <h2 class="h5 fw-bold mb-2">
+            <a href="{% url 'services:detail' s.slug %}">{{ s.nombre }}</a>
+          </h2>
+          <p class="text-secondary mb-3">{{ s.bajada }}</p>
+          <ul class="servicio-lista mb-3">
+            {% for item in s.incluye|slice:":3" %}<li>{{ item }}</li>{% endfor %}
+          </ul>
+          <a class="enlace-flecha" href="{% url 'services:detail' s.slug %}">
+            Ver {{ s.nombre|lower }}
+          </a>
+        </article>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% include "core/_cta.html" %}
+</div>
+{% endblock %}

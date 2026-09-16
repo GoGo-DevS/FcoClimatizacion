@@ -1,0 +1,24 @@
+{% comment %}
+  Cierre con la acción: el teléfono es el único canal que el cliente confirmó,
+  así que el CTA es WhatsApp y no un formulario que nadie lee.
+{% endcomment %}
+<section class="cta-final rounded-4 p-4 p-md-5 my-5">
+  <div class="row align-items-center g-3">
+    <div class="col-lg-8">
+      <h2 class="h3 fw-bold mb-2">¿Cotizamos tu equipo?</h2>
+      <p class="mb-0 cta-texto">
+        Cuéntanos qué necesitas y en qué comuna estás. Te respondemos con una
+        propuesta concreta: qué incluye, qué no incluye y cuánto cuesta.
+      </p>
+    </div>
+    <div class="col-lg-4 d-grid gap-2">
+      <a class="btn btn-success btn-lg btn-press" target="_blank" rel="noopener"
+         href="https://wa.me/{{ WHATSAPP_PHONE_CLEAN }}?text=Hola,%20quiero%20cotizar%20aire%20acondicionado.">
+        Escribir por WhatsApp
+      </a>
+      <a class="btn btn-outline-light btn-lg btn-press" href="tel:{{ WHATSAPP_PHONE }}">
+        Llamar ahora
+      </a>
+    </div>
+  </div>
+</section>
