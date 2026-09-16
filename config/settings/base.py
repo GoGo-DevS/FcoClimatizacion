@@ -128,6 +128,14 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Contacto (para templates + WhatsApp)
 WHATSAPP_PHONE = os.getenv("WHATSAPP_PHONE", "+56956393341")
 
+# Medicion. Los dos van VACIOS por defecto a proposito: sin el valor puesto en
+# Render, el <head> no carga nada. Asi el sitio anda igual en local y no se
+# ensucian las metricas con las visitas de desarrollo.
+#   GA4_MEASUREMENT_ID       -> "G-XXXXXXXXXX", lo da Google Analytics
+#   GOOGLE_SITE_VERIFICATION -> el content= de la etiqueta HTML de Search Console
+GA4_MEASUREMENT_ID = os.getenv("GA4_MEASUREMENT_ID", "").strip()
+GOOGLE_SITE_VERIFICATION = os.getenv("GOOGLE_SITE_VERIFICATION", "").strip()
+
 CSRF_TRUSTED_ORIGINS = env_list(
     "DJANGO_CSRF_TRUSTED_ORIGINS",
     "https://fcoclimatizacion.cl,https://www.fcoclimatizacion.cl",
