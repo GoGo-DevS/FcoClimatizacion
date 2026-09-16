@@ -68,6 +68,9 @@
           <a class="nav-link nav-main-link {% if request.path|slice:':10' == '/trabajos/' %}active{% endif %}" href="/trabajos/">Trabajos</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link nav-main-link {% if '/servicios/' in request.path %}active{% endif %}" href="/servicios/">Servicios</a>
+        </li>
+        <li class="nav-item">
           <a class="btn btn-success btn-sm btn-press nav-cta-primary" target="_blank"
              href="https://wa.me/{{ WHATSAPP_PHONE_CLEAN }}?text=Hola%20quiero%20cotizar%20aire%20acondicionado.">
              WhatsApp
@@ -92,8 +95,16 @@
         <a class="btn btn-success btn-press" target="_blank" href="https://wa.me/{{ WHATSAPP_PHONE_CLEAN }}?text=Hola%20quiero%20cotizar%20aire%20acondicionado.">WhatsApp directo</a>
       </div>
       <div class="col-sm-6 col-lg-3">
-        <h3 class="h6 fw-semibold mb-2">Navegación</h3>
+        <h3 class="h6 fw-semibold mb-2">Servicios</h3>
         <ul class="list-unstyled footer-links mb-0">
+          {% comment %}
+            Los enlaces del pie no son decoracion: son como Google llega a las
+            paginas de servicio desde cualquier pagina del sitio.
+          {% endcomment %}
+          <li><a href="/servicios/instalacion-aire-acondicionado/">Instalación de aire acondicionado</a></li>
+          <li><a href="/servicios/mantencion-aire-acondicionado/">Mantención y limpieza</a></li>
+          <li><a href="/servicios/reparacion-aire-acondicionado/">Reparación y diagnóstico</a></li>
+          <li><a href="/servicios/venta-equipos-climatizacion/">Venta de equipos</a></li>
           <li><a href="/">Inicio</a></li>
           <li><a href="/trabajos/">Trabajos</a></li>
           <li><a target="_blank" href="https://wa.me/{{ WHATSAPP_PHONE_CLEAN }}?text=Hola%20quiero%20cotizar%20aire%20acondicionado.">WhatsApp</a></li>

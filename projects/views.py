@@ -2,6 +2,8 @@ from django.core.paginator import Paginator
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 
+from core import seo
+
 from .models import Project
 from .utils import is_segmented_title, pick_cover_image
 
@@ -39,6 +41,12 @@ def projects_list(request):
         {
             "projects": page_obj,
             "page_obj": page_obj,
+            "meta_title": "Trabajos realizados | FCO Climatización",
+            "meta_description": (
+                "Instalaciones y mantenciones de aire acondicionado realizadas por "
+                "FCO Climatización en casas, oficinas, locales y colegios."),
+            "canonical": f"{seo.DOMINIO}/trabajos/",
+            "schema_extra": [seo.migas_schema([("Inicio", "/"), ("Trabajos", "/trabajos/")])],
         },
     )
 
@@ -54,10 +62,18 @@ def project_detail(request, project_id):
     project.has_images = len(project.images_list) > 0
     project.cover_image = pick_cover_image(project)
 
+    ruta = f"/trabajos/{project.id}/"
     return render(
         request,
         "projects/project_detail.html",
         {
+            "meta_title": f"{project.title} | FCO Climatización",
+            "meta_description": (
+                project.description
+                or "Trabajo de climatización realizado por FCO Climatización."),
+            "canonical": f"{seo.DOMINIO}{ruta}",
+            "schema_extra": [seo.migas_schema([
+                ("Inicio", "/"), ("Trabajos", "/trabajos/"), (project.title, ruta)])],
             "project": project,
         },
     )
