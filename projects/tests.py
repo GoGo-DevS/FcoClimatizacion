@@ -186,3 +186,47 @@ class LaDescripcionNoInventaElTrabajo(TestCase):
         # Y sigue sin inventar lo que no se sabe.
         self.assertEqual((proyecto.comuna, proyecto.region, proyecto.brand), ("", "", ""))
         self.assertIsNone(proyecto.btu)
+
+
+@override_settings(MEDIA_ROOT=CARPETA)
+class LoQueEscribeElClienteSobreviveAlDespliegue(TestCase):
+    """El build reimporta los ZIP en CADA deploy: sin esto, lo que el cliente
+    completa en el panel se borra en el despliegue siguiente."""
+
+    def importar(self):
+        return import_segmented_zip(
+            zip_path=zip_con([("instalaciones/1.jpg", imagen(1200, 900))], nombre="uno.zip"),
+            family="instalacion", per_project=8, base_projects=8, clear_existing=True)
+
+    def test_conserva_comuna_marca_btu_y_descripcion(self):
+        self.importar()
+        proyecto = Project.objects.get()
+        proyecto.comuna = "Maipú"
+        proyecto.brand = "Kendal"
+        proyecto.btu = 12000
+        proyecto.description = "Instalación en el segundo piso, con canalización a la vista."
+        proyecto.save()
+
+        resultado = self.importar()
+
+        vuelto = Project.objects.get()
+        self.assertEqual(vuelto.comuna, "Maipú")
+        self.assertEqual(vuelto.brand, "Kendal")
+        self.assertEqual(vuelto.btu, 12000)
+        self.assertIn("segundo piso", vuelto.description)
+        self.assertEqual(resultado["restaurados"], 1)
+
+    def test_un_trabajo_nuevo_entra_vacio_y_no_hereda_datos_de_otro(self):
+        self.importar()
+        proyecto = Project.objects.get()
+        proyecto.comuna = "Maipú"
+        proyecto.save()
+        # Ahora llegan más fotos: aparece un trabajo (02) que nunca existió.
+        import_segmented_zip(
+            zip_path=zip_con([(f"instalaciones/{i}.jpg", imagen(1200, 900)) for i in range(9)],
+                             nombre="nueve.zip"),
+            family="instalacion", per_project=8, base_projects=8, clear_existing=True)
+        nuevo = Project.objects.get(title="Instalación de aire acondicionado (02)")
+        self.assertEqual(nuevo.comuna, "")
+        self.assertEqual(Project.objects.get(
+            title="Instalación de aire acondicionado (01)").comuna, "Maipú")

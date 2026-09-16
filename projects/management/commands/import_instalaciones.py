@@ -29,6 +29,7 @@ class Command(BaseCommand):
         self.stdout.write(
             self.style.SUCCESS(
                 f"OK: instalaciones importadas. proyectos={result['created']} "
-                f"imagenes={result['total_images']} removidos={result['removed_projects']}"
+                f"imagenes={result['total_images']} removidos={result['removed_projects']} "
+                f"descartadas={result['descartadas']} datos_conservados={result['restaurados']}"
             )
         )

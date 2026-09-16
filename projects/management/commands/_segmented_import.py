@@ -197,6 +197,27 @@ def import_segmented_zip(*, zip_path: Path, family: str, per_project: int, base_
 
     prefix = _family_prefix(family)
     removed_projects = 0
+
+    # LO QUE EL CLIENTE ESCRIBIO NO SE PIERDE EN EL DESPLIEGUE.
+    #
+    # El build vuelve a importar los ZIP en CADA deploy, porque el disco de
+    # Render es efimero y las fotos hay que volver a subirlas. Con eso, todo lo
+    # que el cliente completara desde el panel -- la comuna del trabajo, la
+    # marca, los BTU, su descripcion -- se borraba en el despliegue siguiente,
+    # sin aviso. Es el mismo error que ya costo caro en otro proyecto con un
+    # seed que corria en cada build.
+    #
+    # Se puede rescatar porque el titulo es DETERMINISTA: el trabajo (03) sigue
+    # siendo el (03) despues de reimportar.
+    guardado = {
+        p.title: {
+            "comuna": p.comuna, "region": p.region, "brand": p.brand,
+            "btu": p.btu, "description": p.description,
+            "project_type": p.project_type, "featured": p.featured,
+        }
+        for p in Project.objects.filter(title__startswith=prefix)
+    }
+
     if clear_existing:
         # Tambien se borran los titulos VIEJOS ("Instalacion split mural - RM
         # (03)"). Sin esto, al cambiar el formato del titulo los trabajos
@@ -212,17 +233,22 @@ def import_segmented_zip(*, zip_path: Path, family: str, per_project: int, base_
     chunks = _build_chunks(len(image_names), per_project, base_projects)
     created = 0
 
+    restaurados = 0
     with zipfile.ZipFile(zip_path, "r") as zip_file:
         for idx, (start, end) in enumerate(chunks, start=1):
-            project = Project.objects.create(
-                title=_build_title(family, idx),
-                featured=True,
+            titulo = _build_title(family, idx)
+            campos = {
+                "featured": True,
                 # Sin descripcion inventada: la escribe el cliente en el panel.
-                description="",
-                region="",
-                comuna="",
-                project_type="local" if family == "mantencion" else "casa",
-            )
+                "description": "",
+                "region": "",
+                "comuna": "",
+                "project_type": "local" if family == "mantencion" else "casa",
+            }
+            if titulo in guardado:
+                campos.update(guardado[titulo])
+                restaurados += 1
+            project = Project.objects.create(title=titulo, **campos)
             for order, name in enumerate(image_names[start:end]):
                 data = zip_file.read(name)
                 filename = f"{project.id}_{order}_{Path(name).name}"
@@ -242,5 +268,6 @@ def import_segmented_zip(*, zip_path: Path, family: str, per_project: int, base_
         "total_images": len(image_names),
         "removed_projects": removed_projects,
         "descartadas": descartadas,
+        "restaurados": restaurados,
         "chunks": chunks,
     }
