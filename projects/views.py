@@ -1,5 +1,4 @@
 from django.core.paginator import Paginator
-from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 
@@ -8,13 +7,16 @@ from .utils import is_segmented_title, pick_cover_image
 
 
 def _segmented_projects_queryset():
+    """Los trabajos del portafolio.
+
+    NO se filtra por prefijo de titulo: al cambiar el formato de los titulos el
+    16-09-2026 (de "Instalacion split mural - RM (03)" a "Instalación de aire
+    acondicionado (01)") este filtro dejo la lista VACIA, porque buscaba
+    "Instalacion " sin tilde. Quien decide que es del portafolio es
+    `is_segmented_title`, en un solo lugar.
+    """
     return (
         Project.objects
-        .filter(
-            Q(title__startswith="Instalacion ")
-            | Q(title__startswith="Mantencion ")
-            | Q(title__startswith="Trabajo realizado ")
-        )
         .order_by("-created_at")
         .prefetch_related("images")
     )

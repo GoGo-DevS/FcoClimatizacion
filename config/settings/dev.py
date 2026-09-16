@@ -9,3 +9,11 @@ ALLOWED_HOSTS = list(dict.fromkeys(_DEV_DEFAULT_ALLOWED_HOSTS + _ENV_ALLOWED_HOS
 
 CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SECURE = False
+
+# En desarrollo y en las pruebas no hay manifiesto de estaticos (no se corre
+# collectstatic), y con el backend de produccion cualquier {% static %} revienta
+# con "Missing staticfiles manifest entry".
+STORAGES = {
+    **STORAGES,
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+}

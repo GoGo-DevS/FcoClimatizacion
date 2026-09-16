@@ -9,7 +9,9 @@ PROJECT_TYPE_CHOICES = [
 class Project(models.Model):
     title = models.CharField("Título", max_length=120)
     comuna = models.CharField("Comuna", max_length=80, blank=True)
-    region = models.CharField("Región", max_length=80, blank=True, default="RM")
+    # Sin default: "RM" por omision hacia que el sitio afirmara la region de
+    # un trabajo que nadie completo. Vacio = no se dice nada.
+    region = models.CharField("Región", max_length=80, blank=True)
     project_type = models.CharField("Tipo", max_length=20, choices=PROJECT_TYPE_CHOICES, default="casa")
     brand = models.CharField("Marca", max_length=60, blank=True)
     btu = models.PositiveIntegerField("BTU", blank=True, null=True)

@@ -4,8 +4,18 @@ from functools import lru_cache
 
 from PIL import Image
 
+# Los titulos del portafolio. Desde el 16-09-2026 son deterministas y no
+# incluyen region, porque la region se inventaba con random (ver
+# _segmented_import). Se aceptan TAMBIEN los titulos viejos para que un sitio
+# que todavia no ha vuelto a importar siga mostrando su portafolio.
 SEGMENTED_TITLE_RE = re.compile(
-    r"^(Instalacion .+ - [A-Za-z]+ \(\d{2}\)|Mantencion .+ - [A-Za-z]+ \(\d{2}\)|Trabajo realizado - [A-Za-z]+ \(\d{2}\))$"
+    r"^("
+    r"(Instalación|Instalacion|Mantención|Mantencion) de aire acondicionado \(\d{2}\)"
+    r"|Trabajo realizado \(\d{2}\)"
+    r"|Instalacion .+ - [A-Za-z]+ \(\d{2}\)"
+    r"|Mantencion .+ - [A-Za-z]+ \(\d{2}\)"
+    r"|Trabajo realizado - [A-Za-z]+ \(\d{2}\)"
+    r")$"
 )
 
 
