@@ -36,6 +36,16 @@
     gtag('config', '{{ GA4_MEASUREMENT_ID }}');
   </script>
   {% endif %}
+  {% if GA4_MEASUREMENT_ID %}
+  {% comment %}
+    Eventos de contacto (WhatsApp, telefono, correo, formulario). Sin esto GA4
+    solo cuenta visitas y no se sabe cuantas de ellas levantaron el telefono.
+    Va {% comment %} y NO {# #}: el de llaves solo sirve en UNA linea, el
+    multilinea se imprime en la pagina. Noveno caso del mismo bug en estos repos.
+  {% endcomment %}
+  <script src="{% static 'js/medicion-contactos.js' %}" defer></script>
+  {% endif %}
+
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="FCO Climatización">
@@ -70,7 +80,7 @@
 <nav class="navbar navbar-expand-lg sticky-top site-nav">
   <div class="container">
     <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="/">
-      <img class="site-logo" src="{% static 'img/logo-fco-variant.png' %}" alt="FCO CLIMATIZACIÓN">
+      <img class="site-logo" src="{% static 'img/logo-fco-variant.png' %}" alt="FCO CLIMATIZACIÓN" width="1400" height="360">
     </a>
 
     <button class="navbar-toggler d-lg-none border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Abrir menú de navegación">
