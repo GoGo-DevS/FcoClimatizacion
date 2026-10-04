@@ -21,8 +21,9 @@ mantener y desplegar no pone nada en riesgo.
 SERVICIOS = [
     {
         "slug": "instalacion-aire-acondicionado",
+        "icono": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="7" rx="1.6"/><path d="M6.5 9h11M8 15.5c0 1.2-1 1.5-1 2.8M12 15.5c0 1.5-1 1.8-1 3.2M16 15.5c0 1.2-1 1.5-1 2.8"/></svg>',
         "nombre": "Instalación de aire acondicionado",
-        "titulo_seo": "Instalación de aire acondicionado en Santiago | FCO Climatización",
+        "titulo_seo": "Instalación de aire acondicionado en Ciudad de los Valles y Pudahuel | FCO Climatización",
         "meta": (
             "Instalación de aire acondicionado split en casas, oficinas y locales "
             "de la Región Metropolitana. Canalización, prueba de funcionamiento, "
@@ -65,8 +66,9 @@ SERVICIOS = [
     },
     {
         "slug": "mantencion-aire-acondicionado",
+        "icono": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5c3 3.7 5 6.3 5 8.8a5 5 0 0 1-10 0c0-2.5 2-5.1 5-8.8Z"/><path d="M9.5 12.8a2.6 2.6 0 0 0 2.6 2.6"/></svg>',
         "nombre": "Mantención de aire acondicionado",
-        "titulo_seo": "Mantención de aire acondicionado | Limpieza de split | FCO Climatización",
+        "titulo_seo": "Mantención de aire acondicionado en Ciudad de los Valles y Pudahuel | FCO Climatización",
         "meta": (
             "Mantención y limpieza de aire acondicionado split: filtros, unidad "
             "interior y exterior, y prueba de funcionamiento. Región Metropolitana "
@@ -107,8 +109,9 @@ SERVICIOS = [
     },
     {
         "slug": "reparacion-aire-acondicionado",
+        "icono": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15.2 3.4a5 5 0 0 0-5.6 7.9l-6 6a1.6 1.6 0 0 0 0 2.3l.8.8a1.6 1.6 0 0 0 2.3 0l6-6a5 5 0 0 0 7.9-5.6l-3 3-2.4-.6-.6-2.4 3-3Z"/></svg>',
         "nombre": "Reparación de aire acondicionado",
-        "titulo_seo": "Reparación de aire acondicionado | Diagnóstico | FCO Climatización",
+        "titulo_seo": "Reparación de aire acondicionado en Ciudad de los Valles y Pudahuel | FCO Climatización",
         "meta": (
             "Reparación de aire acondicionado: diagnóstico del equipo, revisión de "
             "gas, drenaje y sistema eléctrico. Región Metropolitana y comunas "
@@ -148,8 +151,9 @@ SERVICIOS = [
     },
     {
         "slug": "venta-equipos-climatizacion",
+        "icono": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.6 12.6 11 5.2a2 2 0 0 1 1.4-.6l5 .1a2 2 0 0 1 2 2l.1 5a2 2 0 0 1-.6 1.4l-7.4 7.4a2 2 0 0 1-2.8 0l-5.1-5.1a2 2 0 0 1 0-2.8Z"/><circle cx="15.8" cy="8.2" r="1.3"/></svg>',
         "nombre": "Venta de equipos de climatización",
-        "titulo_seo": "Venta de aire acondicionado con instalación | FCO Climatización",
+        "titulo_seo": "Venta de aire acondicionado con instalación en Pudahuel y Lampa | FCO Climatización",
         "meta": (
             "Venta de equipos de aire acondicionado con instalación incluida. Te "
             "ayudamos a elegir la capacidad correcta según el ambiente. Factura y "

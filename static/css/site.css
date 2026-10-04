@@ -1,20 +1,23 @@
 :root {
-  --fco-navy: #0b3a66;
-  --fco-blue: #1f6fb2;
-  --fco-blue-2: #2f88d2;
-  --fco-blue-soft: #eaf4ff;
-  --fco-surface: #f5f9fd;
+  --fco-navy: #081028;
+  --fco-blue: #2060E8;
+  --fco-blue-2: #4A86F2;
+  --fco-blue-soft: #E8F1FF;
+  --fco-surface: #F4F8FF;
   --fco-white: #ffffff;
+  --fco-indigo: #4840E0;   /* el arco del logo */
+  --fco-ink: #081028;      /* la tinta del logo: fondos oscuros */
+  --fco-azul-claro: #7FB2FF;  /* azul legible SOBRE la tinta (8.71:1) */
   --fco-whatsapp: #25d366;
-  --fco-text: #10263a;
-  --fco-muted: #5c7287;
-  --fco-border: #d8e6f5;
+  --fco-text: #101A2E;
+  --fco-muted: #5A6B85;
+  --fco-border: #D7E3F8;
   --radius-sm: 0.65rem;
   --radius-md: 1rem;
   --radius-lg: 1.25rem;
-  --shadow-soft: 0 8px 24px rgba(11, 58, 102, 0.08);
-  --shadow-md: 0 14px 36px rgba(11, 58, 102, 0.12);
-  --shadow-lg: 0 18px 44px rgba(11, 58, 102, 0.16);
+  --shadow-soft: 0 8px 24px rgba(8, 16, 40, 0.08);
+  --shadow-md: 0 14px 36px rgba(8, 16, 40, 0.12);
+  --shadow-lg: 0 18px 44px rgba(8, 16, 40, 0.16);
   --dur-fast: 180ms;
   --dur-base: 280ms;
   --nav-overlay-top: 72px;
@@ -52,7 +55,7 @@ main {
   right: 0;
   top: 0;
   height: 3px;
-  background: linear-gradient(90deg, #0f4d86, #2e89d4 45%, #0f4d86);
+  background: linear-gradient(90deg, #143A8F, #2e89d4 45%, #143A8F);
   pointer-events: none;
 }
 
@@ -75,8 +78,8 @@ main {
 .site-logo {
   display: block;
   width: auto;
-  height: 32px;
-  max-width: min(70vw, 320px);
+  height: 44px;
+  max-width: min(72vw, 340px);
   object-fit: contain;
 }
 
@@ -261,7 +264,7 @@ body.nav-menu-open {
 
 .process-step {
   height: 100%;
-  border: 1px solid #d6e6f6;
+  border: 1px solid #D7E3F8;
   border-radius: var(--radius-sm);
   background: #f9fcff;
   padding: 0.95rem;
@@ -282,7 +285,7 @@ body.nav-menu-open {
   font-weight: 800;
   letter-spacing: 0.04em;
   color: #ffffff;
-  background: linear-gradient(130deg, #0f4d86, #2f88d2);
+  background: linear-gradient(130deg, #143A8F, #4A86F2);
 }
 
 .faq-panel {
@@ -294,7 +297,7 @@ body.nav-menu-open {
 
 .faq-panel .accordion-item {
   border: 0;
-  border-bottom: 1px solid #e2edf8;
+  border-bottom: 1px solid #D7E3F8;
 }
 
 .faq-panel .accordion-item:last-child {
@@ -310,7 +313,7 @@ body.nav-menu-open {
 .faq-panel .accordion-button:not(.collapsed) {
   color: var(--fco-blue);
   background: #f4f9ff;
-  box-shadow: inset 0 -1px 0 #d7e7f6;
+  box-shadow: inset 0 -1px 0 #D7E3F8;
 }
 
 .faq-panel .accordion-button:focus {
@@ -320,13 +323,13 @@ body.nav-menu-open {
 .final-cta {
   border: 1px solid #c9def2;
   border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, #f5fbff 0%, #e8f4ff 100%);
+  background: linear-gradient(135deg, #f5fbff 0%, #E8F1FF 100%);
   box-shadow: var(--shadow-soft);
 }
 
 .service-mini-card {
   height: 100%;
-  border: 1px solid #d6e6f6;
+  border: 1px solid #D7E3F8;
   border-radius: var(--radius-sm);
   padding: 0.78rem 0.7rem;
   display: flex;
@@ -436,7 +439,7 @@ body.nav-menu-open {
   height: min(70vh, 520px);
   border-radius: var(--radius-md);
   overflow: hidden;
-  background: #eaf4ff;
+  background: #E8F1FF;
 }
 
 .project-detail #detailCarousel,
@@ -465,15 +468,15 @@ body.nav-menu-open {
   width: 48px;
   height: 48px;
   border-radius: 999px;
-  background-color: rgba(11, 58, 102, 0.86);
+  background-color: rgba(8, 16, 40, 0.86);
   background-size: 55% 55%;
-  box-shadow: 0 10px 22px rgba(11, 58, 102, 0.26);
+  box-shadow: 0 10px 22px rgba(8, 16, 40, 0.26);
   filter: brightness(4.6);
 }
 
 .project-detail #detailCarousel .carousel-control-prev:hover .carousel-control-prev-icon,
 .project-detail #detailCarousel .carousel-control-next:hover .carousel-control-next-icon {
-  background-color: rgba(11, 58, 102, 0.96);
+  background-color: rgba(8, 16, 40, 0.96);
 }
 
 .pagination-modern .page-link {
@@ -487,13 +490,13 @@ body.nav-menu-open {
   border-radius: 999px !important;
   color: var(--fco-navy);
   background: var(--fco-white);
-  box-shadow: 0 6px 14px rgba(11, 58, 102, 0.1);
+  box-shadow: 0 6px 14px rgba(8, 16, 40, 0.1);
   transition: transform var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
 }
 
 .pagination-modern .page-link:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(11, 58, 102, 0.14);
+  box-shadow: 0 10px 20px rgba(8, 16, 40, 0.14);
 }
 
 .pagination-modern .page-item.active .page-link {
@@ -531,17 +534,26 @@ body.nav-menu-open {
 }
 
 .btn-primary {
-  --bs-btn-bg: #1f6fb2;
-  --bs-btn-border-color: #1f6fb2;
-  --bs-btn-hover-bg: #185f99;
-  --bs-btn-hover-border-color: #185f99;
+  --bs-btn-bg: #2060E8;
+  --bs-btn-border-color: #2060E8;
+  --bs-btn-hover-bg: #1A4FC4;
+  --bs-btn-hover-border-color: #1A4FC4;
 }
 
 .btn-success {
   --bs-btn-bg: var(--fco-whatsapp);
   --bs-btn-border-color: var(--fco-whatsapp);
-  --bs-btn-hover-bg: #20bc58;
-  --bs-btn-hover-border-color: #20bc58;
+  --bs-btn-hover-bg: #1EBE5B;
+  --bs-btn-hover-border-color: #1EBE5B;
+  /* Bootstrap pone el texto BLANCO, que sobre este verde da 1.98:1 -- muy
+     debajo del 4.5 que pide AA, y es el boton principal del sitio. Con el
+     verde oscuro da 7.33:1. Se arregla aca y no en cada plantilla. */
+  --bs-btn-color: #06301A;
+  --bs-btn-hover-color: #06301A;
+  --bs-btn-active-color: #06301A;
+  --bs-btn-active-bg: #1EBE5B;
+  --bs-btn-active-border-color: #1EBE5B;
+  font-weight: 700;
 }
 
 a {
@@ -654,7 +666,7 @@ textarea.form-control:focus {
 
 @media (max-width: 767.98px) {
   .site-logo {
-    height: 28px;
+    height: 36px;
   }
 
   .home-hero {
@@ -769,9 +781,9 @@ textarea.form-control:focus {
   color: #f7fbff;
   border-color: rgba(95, 148, 195, 0.4) !important;
   background:
-    linear-gradient(118deg, rgba(6, 31, 54, 0.92) 0%, rgba(11, 58, 102, 0.84) 47%, rgba(26, 119, 185, 0.62) 100%),
+    linear-gradient(118deg, rgba(6, 31, 54, 0.92) 0%, rgba(8, 16, 40, 0.84) 47%, rgba(26, 119, 185, 0.62) 100%),
     radial-gradient(640px 280px at 82% 18%, rgba(76, 178, 255, 0.28), transparent 70%),
-    linear-gradient(145deg, #0d3f6f 0%, #1f6fb2 52%, #2f88d2 100%);
+    linear-gradient(145deg, #0d3f6f 0%, #2060E8 52%, #4A86F2 100%);
   background-size: cover, auto, auto;
   background-position: center center, center, center;
   box-shadow: var(--shadow-md);
@@ -877,17 +889,103 @@ textarea.form-control:focus {
 .lead-corto { max-width: 62ch; font-size: 1.05rem; }
 
 /* ---- Hero ---- */
-.hero-nuevo { padding: 2.2rem 0 .5rem; }
-.hero-chip {
-  display: inline-block;
-  background: var(--fco-blue-soft);
-  color: var(--fco-navy);
-  border: 1px solid var(--fco-border);
+.hero-nuevo { padding: 1.4rem 0 .5rem; }
+.hero-caja {
+  background:
+    radial-gradient(1100px 420px at 12% -10%, rgba(32, 96, 232, .34), transparent 62%),
+    radial-gradient(760px 380px at 92% 8%, rgba(72, 64, 224, .26), transparent 60%),
+    var(--fco-ink);
+  color: #fff;
+  border-radius: var(--radius-lg);
+  padding: 2.4rem 1.6rem 1.4rem;
+  position: relative;
+  overflow: hidden;
+}
+/* El copo del logo, muy tenue, como marca de agua. No compite con el texto. */
+.hero-caja::after {
+  content: "";
+  position: absolute;
+  right: -90px; top: -90px;
+  width: 320px; height: 320px;
+  border-radius: 50%;
+  border: 2px solid rgba(127, 178, 255, .16);
+  pointer-events: none;
+}
+.hero-caja .hero-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  background: rgba(127, 178, 255, .14);
+  color: #CFE2FF;
+  border: 1px solid rgba(127, 178, 255, .3);
   border-radius: 99px;
-  padding: .35rem .85rem;
-  font-size: .82rem;
-  font-weight: 600;
-  margin-bottom: .9rem;
+  padding: .4rem .95rem;
+  font-size: .85rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+.hero-chip__punto {
+  width: .5rem; height: .5rem;
+  border-radius: 50%;
+  background: var(--fco-whatsapp);
+  box-shadow: 0 0 0 3px rgba(37, 211, 102, .22);
+}
+.hero-caja .hero-titulo { color: #fff; }
+.hero-caja .hero-bajada { color: #C3D4EE; }
+.hero-caja .hero-datos li { color: #E8F1FF; }
+.hero-caja .hero-datos li::before { background: var(--fco-azul-claro); }
+.hero-caja .hero-datos strong { color: #fff; }
+
+/* El fantasma del hero: borde claro sobre el fondo oscuro. El
+   btn-outline-primary de Bootstrap es azul sobre azul, no se leia. */
+.btn-hero-fantasma {
+  color: #fff;
+  border: 1px solid rgba(207, 226, 255, .45);
+  background: transparent;
+}
+.btn-hero-fantasma:hover,
+.btn-hero-fantasma:focus-visible {
+  color: var(--fco-ink);
+  background: #fff;
+  border-color: #fff;
+}
+
+.hero-comunas {
+  margin-top: 1.9rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(127, 178, 255, .2);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .55rem .85rem;
+}
+.hero-comunas__titulo {
+  color: #8FB3E6;
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.hero-comunas__lista {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem .5rem;
+}
+.hero-comunas__lista li {
+  background: rgba(255, 255, 255, .07);
+  border: 1px solid rgba(127, 178, 255, .18);
+  color: #DCE8FA;
+  border-radius: 99px;
+  padding: .22rem .7rem;
+  font-size: .84rem;
+}
+.hero-comunas__lista li.es-principal {
+  background: var(--fco-blue);
+  border-color: var(--fco-blue);
+  color: #fff;
+  font-weight: 700;
 }
 .hero-titulo {
   font-size: clamp(1.85rem, 4.2vw, 3rem);
@@ -921,9 +1019,10 @@ textarea.form-control:focus {
   background: var(--fco-blue);
 }
 .hero-figura {
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   overflow: hidden;
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, .35);
+  border: 1px solid rgba(127, 178, 255, .18);
   aspect-ratio: 4 / 3;
 }
 .hero-figura img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -1038,7 +1137,103 @@ textarea.form-control:focus {
 .migas a:hover { text-decoration: underline; }
 
 @media (max-width: 575.98px) {
-  .hero-nuevo { padding-top: 1.2rem; }
+  .hero-nuevo { padding-top: .8rem; }
+  .hero-caja { padding: 1.7rem 1.1rem 1.2rem; border-radius: var(--radius-md); }
+  .hero-caja::after { display: none; }
+  .hero-comunas { margin-top: 1.4rem; }
   .hero-botones .btn { width: 100%; }
   .cta-final { padding: 1.5rem !important; }
 }
+
+
+/* ---- Boton de WhatsApp ----
+   Era `btn-success` de Bootstrap: un verde que no es el de WhatsApp y que
+   encima es el color mas fuerte de la pagina, o sea el acento de la marca
+   terminaba siendo el de otra empresa. Ahora usa el verde real de WhatsApp,
+   que ahi SI corresponde (es el canal), y la marca manda en el resto. */
+.btn-wsp { /* alias: el estilo vive en .btn-success, arriba */ }
+
+
+/* El logo en el pie. Antes el nombre estaba escrito a mano y todo junto
+   ("FCOCLIMATIZACION"), con el logo real sin aparecer en ninguna parte. */
+.footer-logo {
+  display: block;
+  width: auto;
+  height: 52px;
+  max-width: 260px;
+  object-fit: contain;
+}
+
+
+/* ---- Ritmo de la pagina ----
+   La home eran cinco secciones blancas seguidas: nada marcaba donde terminaba
+   una y empezaba la otra, y el scroll se sentia infinito. Esta franja clara
+   separa sin dibujar una linea. */
+.franja-clara {
+  background: var(--fco-surface);
+  border-top: 1px solid var(--fco-border);
+  border-bottom: 1px solid var(--fco-border);
+  padding: 2.6rem 0;
+  margin-top: 3rem;
+}
+.franja-clara + .franja-clara { margin-top: 0; border-top: 0; }
+
+/* ---- Iconos de servicio ----
+   Cada tarjeta era texto pelado y las cuatro se veian iguales. */
+.servicio-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem; height: 2.6rem;
+  margin-bottom: .9rem;
+  border-radius: .85rem;
+  background: var(--fco-blue-soft);
+  color: var(--fco-blue);
+  font-size: 1.25rem;
+  line-height: 1;
+  border: 1px solid var(--fco-border);
+  transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease;
+}
+.servicio-card--enlace:hover .servicio-icono,
+.servicio-card--enlace:focus-visible .servicio-icono {
+  background: var(--fco-blue);
+  color: #fff;
+  border-color: var(--fco-blue);
+}
+/* El borde se pinta de la marca al pasar por encima: dice "esto se puede
+   apretar" sin agregar una palabra mas. */
+.servicio-card--enlace { transition: border-color var(--dur-fast) ease, transform var(--dur-fast) ease; }
+.servicio-card--enlace:hover,
+.servicio-card--enlace:focus-visible {
+  border-color: var(--fco-blue);
+  transform: translateY(-2px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .servicio-card--enlace:hover,
+  .servicio-card--enlace:focus-visible { transform: none; }
+}
+
+
+/* La seccion va dentro de .container, asi que para que el fondo llegue de
+   borde a borde hay que sacarla del ancho del contenedor. 100vw incluye la
+   barra de scroll, por eso el padding-right compensa: sin eso aparece scroll
+   horizontal en escritorio. */
+.franja-clara-seccion {
+  background: var(--fco-surface);
+  border-top: 1px solid var(--fco-border);
+  border-bottom: 1px solid var(--fco-border);
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding: 2.6rem calc(50vw - 50%);
+}
+@supports (width: 100dvw) {
+  .franja-clara-seccion {
+    margin-left: calc(50% - 50dvw);
+    margin-right: calc(50% - 50dvw);
+    padding-left: calc(50dvw - 50%);
+    padding-right: calc(50dvw - 50%);
+  }
+}
+
+/* El SVG dentro del cuadrito del icono */
+.servicio-icono svg { width: 1.35rem; height: 1.35rem; display: block; }

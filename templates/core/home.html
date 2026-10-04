@@ -5,45 +5,71 @@
 <div class="container">
 
   {% comment %}
-    HERO. Antes era un bloque azul con una frase de agencia ("Climatización
-    profesional para hogar y comercio") y ninguna foto del trabajo. Ahora se ve
-    lo que hacen, con una foto real de una faena suya: es lo primero que un
-    cliente quiere comprobar antes de escribir.
+    HERO. Tres cosas que no estaban:
+
+    . LA COMUNA. Decia "Region Metropolitana y comunas cercanas", o sea competia
+      contra toda la region y no ganaba ninguna. Quien tiene el equipo malo
+      busca "aire acondicionado Ciudad de los Valles" y antes de escribir quiere
+      saber si el tecnico llega hasta su casa.
+    . LA FOTO. Usaba la sala de clases, que es la peor del set: el split casi no
+      se ve entre los tubos fluorescentes y las estanterias. La unidad exterior
+      muestra montaje con soporte y canalizacion ordenada, que es justo lo que
+      alguien revisa antes de llamar a un tecnico.
+    . EL FONDO. La pagina era blanca entera y nada destacaba. Este bloque va en
+      la tinta del logo.
   {% endcomment %}
   <section class="hero-nuevo reveal">
-    <div class="row align-items-center g-4 g-lg-5">
-      <div class="col-lg-6">
-        <span class="hero-chip">Región Metropolitana y comunas cercanas</span>
-        <h1 class="hero-titulo">Instalación y mantención de aire acondicionado</h1>
-        <p class="hero-bajada">
-          Instalamos, mantenemos y reparamos equipos split en casas, oficinas y locales.
-          Dejamos el equipo probado antes de irnos, con factura y garantía.
-        </p>
-        <div class="hero-botones">
-          <a class="btn btn-success btn-lg btn-press" target="_blank" rel="noopener"
-             href="https://wa.me/{{ WHATSAPP_PHONE_CLEAN }}?text=Hola,%20quiero%20cotizar%20aire%20acondicionado.">
-            Cotizar por WhatsApp
-          </a>
-          <a class="btn btn-outline-primary btn-lg btn-press" href="#capacidad">
-            ¿Qué capacidad necesito?
-          </a>
+    <div class="hero-caja">
+      <div class="row align-items-center g-4 g-lg-5">
+        <div class="col-lg-6">
+          <span class="hero-chip">
+            <span class="hero-chip__punto" aria-hidden="true"></span>
+            {{ zona_corta }}
+          </span>
+          <h1 class="hero-titulo">Instalación y mantención de aire acondicionado</h1>
+          <p class="hero-bajada">
+            Instalamos, mantenemos y reparamos equipos split en casas, oficinas y locales.
+            Dejamos el equipo probado antes de irnos, con factura y garantía.
+          </p>
+          <div class="hero-botones">
+            <a class="btn btn-success btn-lg btn-press" target="_blank" rel="noopener"
+               href="https://wa.me/{{ WHATSAPP_PHONE_CLEAN }}?text=Hola,%20quiero%20cotizar%20aire%20acondicionado.">
+              Cotizar por WhatsApp
+            </a>
+            <a class="btn btn-hero-fantasma btn-lg btn-press" href="#capacidad">
+              ¿Qué capacidad necesito?
+            </a>
+          </div>
+          <ul class="hero-datos">
+            <li><strong>Factura</strong> y garantía del trabajo</li>
+            <li>Diagnóstico <strong>antes</strong> de cotizar una reparación</li>
+            <li>Casas, oficinas, locales y colegios</li>
+          </ul>
         </div>
-        <ul class="hero-datos">
-          <li><strong>Factura</strong> y garantía del trabajo</li>
-          <li>Diagnóstico <strong>antes</strong> de cotizar una reparación</li>
-          <li>Casas, oficinas, locales y colegios</li>
-        </ul>
+        <div class="col-lg-6">
+          <figure class="hero-figura mb-0">
+            {% comment %}
+              width/height explicitos: sin ellos el texto salta cuando carga la
+              imagen, y ese salto lo penaliza Google (CLS).
+            {% endcomment %}
+            <img src="{% static 'img/trabajos/unidad-exterior.webp' %}"
+                 width="1000" height="750" fetchpriority="high" decoding="async"
+                 alt="Unidad exterior de aire acondicionado instalada con soporte y canalización ordenada por FCO Climatización">
+          </figure>
+        </div>
       </div>
-      <div class="col-lg-6">
-        <figure class="hero-figura mb-0">
-          {% comment %}
-            width/height explícitos: sin ellos el texto salta cuando carga la
-            imagen, y ese salto lo penaliza Google (CLS).
-          {% endcomment %}
-          <img src="{% static 'img/trabajos/aula-colegio.webp' %}"
-               width="1600" height="720" fetchpriority="high" decoding="async"
-               alt="Sala de clases con equipos de aire acondicionado instalados por FCO Climatización">
-        </figure>
+
+      {% comment %}
+        LA FRANJA DE COMUNAS. Es el dato que mas se pregunta por WhatsApp
+        ("¿llegas hasta aca?") y estaba solo en una respuesta de la FAQ, al
+        final de la pagina. Sale de core/seo.COMUNAS, en un solo lugar.
+      {% endcomment %}
+      <div class="hero-comunas">
+        <span class="hero-comunas__titulo">Llegamos a</span>
+        <ul class="hero-comunas__lista">
+          <li class="es-principal">{{ zona_principal }}</li>
+          {% for c in comunas %}<li>{{ c }}</li>{% endfor %}
+        </ul>
       </div>
     </div>
   </section>
@@ -59,6 +85,12 @@
       {% for s in servicios %}
         <div class="col-12 col-md-6">
           <a class="servicio-card servicio-card--enlace d-block h-100" href="{% url 'services:detail' s.slug %}">
+            {% comment %}
+              Eran cuatro cajas identicas: con todo del mismo peso, el ojo no
+              sabe por donde entrar. El icono distingue cada servicio de un
+              vistazo, antes de leer el titulo.
+            {% endcomment %}
+            <span class="servicio-icono" aria-hidden="true">{{ s.icono|safe }}</span>
             <h3 class="h5 fw-bold mb-2">{{ s.nombre }}</h3>
             <p class="text-secondary mb-2">{{ s.bajada }}</p>
             <span class="enlace-flecha">Ver detalle</span>
@@ -69,7 +101,7 @@
   </section>
 
   {% comment %} CALCULADORA: se conserva, es lo mejor que tenía el sitio. {% endcomment %}
-  <section class="mt-5 reveal" id="capacidad">
+  <section class="mt-5 reveal franja-clara-seccion" id="capacidad">
     <div class="row g-4">
       <div class="col-lg-7">
         <div class="card border-0 shadow-sm rounded-4 h-100">
