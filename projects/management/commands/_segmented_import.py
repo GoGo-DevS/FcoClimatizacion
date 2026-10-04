@@ -214,6 +214,10 @@ def import_segmented_zip(*, zip_path: Path, family: str, per_project: int, base_
             "comuna": p.comuna, "region": p.region, "brand": p.brand,
             "btu": p.btu, "description": p.description,
             "project_type": p.project_type, "featured": p.featured,
+            # El orden del portafolio tambien lo decide el cliente desde el
+            # panel: sin esto, ordena sus fotos y el deploy siguiente se las
+            # desordena.
+            "orden": p.orden,
         }
         for p in Project.objects.filter(title__startswith=prefix)
     }

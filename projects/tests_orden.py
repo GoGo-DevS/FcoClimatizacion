@@ -57,49 +57,75 @@ class OrdenDelPortafolioTests(TestCase):
 
 
 class ComandoOrdenarTests(TestCase):
-    """El comando toca la base por ID. Si los ids no son los que se revisaron,
-    no puede ordenar igual: pondria cualquier foto en la portada."""
+    """El comando mapea por TITULO, no por id: los importadores del build
+    borran y recrean los trabajos en cada despliegue, asi que los ids cambian.
+    El titulo no: "(03)" sigue siendo el (03) despues de reimportar."""
 
     def _correr(self, *args):
         salida = StringIO()
         call_command("ordenar_portafolio", *args, stdout=salida, stderr=salida)
         return salida.getvalue()
 
-    def test_sin_los_trabajos_no_toca_nada(self):
-        otro = Project.objects.create(title="Instalación de aire acondicionado (04)",
-                                      featured=True, orden=100)
-        salida = self._correr("--confirmar")
-        self.assertIn("NO SE TOCO NADA", salida)
-        otro.refresh_from_db()
-        self.assertEqual(otro.orden, 100, "escribio pese a que los ids no calzan")
-
-    def test_si_el_titulo_no_calza_lo_nombra_y_se_detiene(self):
-        p = Project.objects.create(id=4, title="Otra cosa", featured=True)
-        salida = self._correr("--confirmar")
-        self.assertIn("NO SE TOCO NADA", salida)
-        self.assertIn("Otra cosa", salida)
-        p.refresh_from_db()
-        self.assertEqual(p.orden, 100)
-
-    def test_con_los_doce_correctos_ordena(self):
+    def _los_doce(self):
         from projects.management.commands.ordenar_portafolio import ORDEN
-        for pk, (titulo, _orden, _motivo) in ORDEN.items():
-            Project.objects.create(id=pk, title=titulo, featured=True, orden=100)
+        for titulo in ORDEN:
+            Project.objects.create(title=titulo, featured=True)
 
+    def test_ordena_los_doce(self):
+        self._los_doce()
         ensayo = self._correr()
         self.assertIn("ENSAYO", ensayo)
-        self.assertEqual(Project.objects.get(id=4).orden, 100, "el ensayo escribio")
+        self.assertEqual(
+            Project.objects.get(title="Instalación de aire acondicionado (04)").orden, 100,
+            "el ensayo escribio")
 
         self._correr("--confirmar")
-        self.assertEqual(Project.objects.get(id=4).orden, 10)
-        self.assertEqual(Project.objects.get(id=10).orden, 20)
-        # la sala de clases queda atras
-        self.assertEqual(Project.objects.get(id=7).orden, 100)
+        self.assertEqual(
+            Project.objects.get(title="Instalación de aire acondicionado (04)").orden, 10)
+        self.assertEqual(
+            Project.objects.get(title="Mantención de aire acondicionado (03)").orden, 20)
+        # la sala de clases y la pared sin equipo quedan atras
+        self.assertEqual(
+            Project.objects.get(title="Instalación de aire acondicionado (05)").orden, 110)
 
     def test_correrlo_dos_veces_no_cambia_nada(self):
-        from projects.management.commands.ordenar_portafolio import ORDEN
-        for pk, (titulo, _o, _m) in ORDEN.items():
-            Project.objects.create(id=pk, title=titulo, featured=True, orden=100)
+        """Corre en CADA despliegue: tiene que ser idempotente."""
+        self._los_doce()
         self._correr("--confirmar")
-        segunda = self._correr("--confirmar")
-        self.assertIn("Ya estaba ordenado", segunda)
+        self.assertIn("Ya estaba ordenado", self._correr("--confirmar"))
+
+    def test_no_pisa_lo_que_movio_el_cliente(self):
+        """Lo mas importante: Francisco ordena sus fotos desde el panel y el
+        despliegue siguiente NO puede devolverlas a donde estaban."""
+        self._los_doce()
+        suya = Project.objects.get(title="Instalación de aire acondicionado (07)")
+        suya.orden = 1          # la quiere primera, aunque sea la mas fea
+        suya.save(update_fields=["orden"])
+
+        salida = self._correr("--confirmar")
+        suya.refresh_from_db()
+        self.assertEqual(suya.orden, 1, "el despliegue le deshizo el orden")
+        self.assertIn("se respeta", salida)
+
+    def test_con_forzar_si_la_reordena(self):
+        self._los_doce()
+        suya = Project.objects.get(title="Instalación de aire acondicionado (07)")
+        suya.orden = 1
+        suya.save(update_fields=["orden"])
+        self._correr("--confirmar", "--forzar")
+        suya.refresh_from_db()
+        self.assertEqual(suya.orden, 100)
+
+    def test_sin_los_trabajos_no_revienta(self):
+        salida = self._correr("--confirmar")
+        self.assertIn("no existe", salida)
+
+    def test_el_orden_sobrevive_al_reimport(self):
+        """Los importadores borran y recrean; `_segmented_import` rescata por
+        titulo lo que edita el cliente, y el orden tiene que ir ahi."""
+        import inspect
+        from projects.management.commands import _segmented_import
+        fuente = inspect.getsource(_segmented_import)
+        bloque = fuente.split("guardado = {", 1)[1].split("}", 1)[0]
+        self.assertIn('"orden"', bloque,
+                      "el orden no se rescata: el deploy siguiente lo borra")

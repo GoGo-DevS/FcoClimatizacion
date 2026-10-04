@@ -15,5 +15,9 @@ python manage.py import_mantenciones
 python manage.py fill_metadata --set-featured --clear-featured-non-segmented
 python manage.py clean_mixed_projects
 python manage.py quitar_fotos_de_personas
+# Deja adelante las fotos que muestran el trabajo. Es idempotente y NO pisa lo
+# que Francisco haya movido desde el panel: solo toca lo que sigue en el valor
+# por defecto. Va aca porque el plan free de Render no tiene Shell.
+python manage.py ordenar_portafolio --confirmar
 
 python manage.py collectstatic --noinput
