@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}{{ meta_title|default:"Aire acondicionado en Santiago | FCO Climatización" }}{% endblock %}</title>
+  <title>{% block title %}{{ meta_title|default:"Aire acondicionado en Ciudad de los Valles y Pudahuel | FCO Climatización" }}{% endblock %}</title>
   {% comment %}
     Sin meta description Google inventa el resumen tomando cualquier frase de la
     página; sin canonical, la misma página con y sin "www" compite consigo misma;
@@ -50,7 +50,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="FCO Climatización">
   <meta property="og:locale" content="es_CL">
-  <meta property="og:title" content="{{ meta_title|default:'Aire acondicionado en Santiago | FCO Climatización' }}">
+  <meta property="og:title" content="{{ meta_title|default:'Aire acondicionado en Ciudad de los Valles y Pudahuel | FCO Climatización' }}">
   <meta property="og:description" content="{{ meta_description|default:'Instalación, mantención y reparación de aire acondicionado con factura y garantía.' }}">
   <meta property="og:url" content="{{ canonical|default:request.build_absolute_uri }}">
   <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/og-fco.jpg' %}{% endblock %}">

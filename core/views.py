@@ -46,7 +46,7 @@ def home(request):
         "featured_projects": destacados,
         "servicios": catalogo.SERVICIOS,
         "preguntas": PREGUNTAS_HOME,
-        "meta_title": "Aire acondicionado en Santiago: instalación y mantención | FCO Climatización",
+        "meta_title": "Aire acondicionado en Ciudad de los Valles y Pudahuel | FCO Climatización",
         "meta_description": seo.DESCRIPCION_CORTA,
         "canonical": f"{seo.DOMINIO}/",
         "schema_extra": [seo.preguntas_schema(PREGUNTAS_HOME)],

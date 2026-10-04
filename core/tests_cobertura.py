@@ -84,6 +84,17 @@ class PantallasTests(TestCase):
         # la respuesta, no solo la pregunta
         self.assertIn("Quilicura", html)
 
+    def test_el_titulo_de_la_portada_nombra_la_comuna(self):
+        """El <title> es lo que Google muestra en el resultado y lo que mas
+        pesa para decidir a quien se lo muestra. Decia "en Santiago", la
+        ciudad entera."""
+        html = self.client.get("/").content.decode()
+        titulo = html.split("<title>", 1)[1].split("</title>", 1)[0]
+        self.assertIn("Ciudad de los Valles", titulo)
+        self.assertNotIn("en Santiago", titulo)
+        # Google corta alrededor de los 60 caracteres
+        self.assertLessEqual(len(titulo), 75, titulo)
+
     def test_los_titulos_de_servicio_nombran_la_comuna_y_no_santiago_a_secas(self):
         from services import catalogo
         for s in catalogo.SERVICIOS:
