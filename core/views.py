@@ -33,6 +33,13 @@ def home(request):
     # Se INTERCALAN instalaciones y mantenciones. Tomando los 6 primeros por
     # fecha salian las 6 mantenciones seguidas, y la portada daba a entender que
     # solo hacen mantencion.
+    #
+    # DENTRO de cada grupo manda `Project.orden` (Meta.ordering), que Francisco
+    # edita desde el panel. Antes mandaba la fecha, asi que la portada abria con
+    # la foto mas antigua de cada tipo: la sala de clases oscura y una pared
+    # donde no se ve ningun equipo, mientras el split abierto con los filtros a
+    # la vista -- la unica que muestra en que consiste una mantencion -- quedaba
+    # fuera.
     instalaciones = [p for p in publicables if p.title.startswith("Instalación")]
     mantenciones = [p for p in publicables if p.title.startswith("Mantención")]
     destacados = []

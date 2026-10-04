@@ -9,7 +9,10 @@ class ProjectImageInline(admin.TabularInline):
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ("title", "comuna", "project_type", "brand", "btu", "featured", "created_at")
+    list_display = ("orden", "title", "comuna", "project_type", "brand", "btu", "featured")
+    list_display_links = ("title",)   # el titulo abre la ficha, el orden se edita en la lista
+    list_editable = ("orden",)
+    ordering = ("orden", "-created_at")
     list_filter = ("featured", "project_type", "brand", "region")
     search_fields = ("title", "comuna", "brand", "description")
     inlines = [ProjectImageInline]

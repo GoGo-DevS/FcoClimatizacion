@@ -18,10 +18,19 @@ class Project(models.Model):
 
     description = models.TextField("Descripción", blank=True)
     featured = models.BooleanField("Destacado", default=False)
+    # El orden en que salen en la portada y en /trabajos/. Mas bajo = primero.
+    # Antes mandaba la fecha, asi que la portada abria con la foto mas antigua
+    # de cada tipo, que resultaron ser las peores: una sala de clases oscura y
+    # una pared donde no se ve ningun equipo. Esto lo decide Francisco desde el
+    # panel, no una lista escrita en el codigo.
+    orden = models.PositiveIntegerField(
+        "Orden", default=100,
+        help_text="Más bajo sale primero. Deja 100 si no te importa el orden.")
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ["-created_at"]
+        # `orden` manda; a igualdad, la mas nueva primero, como antes.
+        ordering = ["orden", "-created_at"]
 
     def __str__(self):
         return self.title
