@@ -61,7 +61,9 @@ class SegmentationTests(TestCase):
 
         response = self.client.get(reverse("projects:list"))
 
-        self.assertContains(response, "Instalación de aire acondicionado (01)")
+        # Desde el 07-10 la tarjeta muestra el H1 de la ficha ("..., trabajo 01")
+        # y no el titulo interno "(01)": ver projects/ficha.py.
+        self.assertContains(response, "Instalación de aire acondicionado, trabajo 01")
         self.assertNotContains(response, "Centro Educacional Gaspar Cabrales")
 
 

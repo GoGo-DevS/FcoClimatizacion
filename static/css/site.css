@@ -1237,3 +1237,10 @@ textarea.form-control:focus {
 
 /* El SVG dentro del cuadrito del icono */
 .servicio-icono svg { width: 1.35rem; height: 1.35rem; display: block; }
+
+/* Comunas de la pagina de servicio: 8 nombres cortos en una columna larga
+   dejaban media pantalla en blanco. En dos o tres columnas se leen de una.
+   .lista-punto ya es grid, asi que se reparte con grid-template-columns
+   (con `columns` no pasa nada: el grid lo ignora). */
+.lista-comunas { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1.5rem; }
+@media (min-width: 768px) { .lista-comunas { grid-template-columns: repeat(3, minmax(0, 1fr)); } }

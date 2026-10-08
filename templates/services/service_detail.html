@@ -32,6 +32,29 @@
       <ul class="lista-punto">
         {% for item in s.para_quien %}<li>{{ item }}</li>{% endfor %}
       </ul>
+
+      {% for sec in s.secciones %}
+        <h2 class="h5 fw-bold mt-4 mb-2">{{ sec.titulo }}</h2>
+        {% for parrafo in sec.parrafos %}<p>{{ parrafo }}</p>{% endfor %}
+        {% if sec.puntos %}
+        <ul class="lista-punto">
+          {% for item in sec.puntos %}<li>{{ item }}</li>{% endfor %}
+        </ul>
+        {% endif %}
+        {% if sec.cierre %}<p>{{ sec.cierre }}</p>{% endif %}
+      {% endfor %}
+
+      {% comment %}
+        La zona sale de core/seo.COMUNAS, la misma lista del pie y de la
+        portada: ninguna pagina puede decir otra cosa.
+      {% endcomment %}
+      <h2 class="h5 fw-bold mt-4 mb-2">Dónde trabajamos</h2>
+      <p class="mb-2">
+        {{ zona_principal }} es nuestra zona principal. También llegamos a estas comunas:
+      </p>
+      <ul class="lista-punto lista-comunas">
+        {% for comuna in comunas %}<li>{{ comuna }}</li>{% endfor %}
+      </ul>
     </div>
 
     <div class="col-lg-5">
@@ -66,6 +89,27 @@
       {% endfor %}
     </div>
   </section>
+
+  {% if trabajos %}
+  <section class="mt-5" aria-labelledby="trabajos-servicio">
+    <h2 id="trabajos-servicio" class="h4 fw-bold mb-3">Trabajos que hemos realizado</h2>
+    <div class="row g-3">
+      {% for t in trabajos %}
+      <div class="col-6 col-md-4 col-lg-3">
+        <a class="d-block text-decoration-none text-reset" href="{% url 'projects:detail' t.id %}">
+          <div class="ratio ratio-4x3 project-cover bg-light rounded-3 overflow-hidden mb-2">
+            {% if t.cover_image %}
+              <img src="{{ t.cover_image.image.url }}" class="w-100 h-100" style="object-fit: cover;" alt="{{ t.ficha.h1 }}" loading="lazy" decoding="async">
+            {% endif %}
+          </div>
+          <span class="small fw-semibold d-block">{{ t.ficha.h1 }}</span>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    <p class="mt-3 mb-0"><a class="fw-semibold" href="{% url 'projects:list' %}">Ver todos los trabajos</a></p>
+  </section>
+  {% endif %}
 
   {% if relacionados %}
   <section class="mt-5">

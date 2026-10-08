@@ -4,6 +4,9 @@ from django.shortcuts import get_object_or_404, render
 
 from core import seo
 
+from services import catalogo
+
+from .ficha import ficha, trabajos_de_familia
 from .models import Project
 from .utils import is_segmented_title, pick_cover_image
 
@@ -34,6 +37,7 @@ def projects_list(request):
         project.images_list = list(project.images.all())
         project.has_images = len(project.images_list) > 0
         project.cover_image = pick_cover_image(project)
+        project.ficha = ficha(project)
 
     return render(
         request,
@@ -62,18 +66,30 @@ def project_detail(request, project_id):
     project.has_images = len(project.images_list) > 0
     project.cover_image = pick_cover_image(project)
 
+    datos = ficha(project)
+    hermanos = trabajos_de_familia(datos["familia"], excluir_id=project.id, limite=6)
+    for h in hermanos:
+        h.cover_image = pick_cover_image(h)
+        h.ficha = ficha(h)
+
+    servicio = catalogo.servicio(datos["servicio_slug"]) if datos["servicio_slug"] else None
+
     ruta = f"/trabajos/{project.id}/"
+    migas = [("Inicio", "/"), ("Trabajos", "/trabajos/")]
+    if servicio:
+        migas.append((servicio["nombre"], datos["servicio_url"]))
+    migas.append((datos["h1"], ruta))
     return render(
         request,
         "projects/project_detail.html",
         {
-            "meta_title": f"{project.title} | FCO Climatización",
-            "meta_description": (
-                project.description
-                or "Trabajo de climatización realizado por FCO Climatización."),
+            "meta_title": datos["titulo_seo"],
+            "meta_description": datos["meta"],
             "canonical": f"{seo.DOMINIO}{ruta}",
-            "schema_extra": [seo.migas_schema([
-                ("Inicio", "/"), ("Trabajos", "/trabajos/"), (project.title, ruta)])],
+            "schema_extra": [seo.migas_schema(migas)],
             "project": project,
+            "ficha": datos,
+            "servicio": servicio,
+            "hermanos": hermanos,
         },
     )
