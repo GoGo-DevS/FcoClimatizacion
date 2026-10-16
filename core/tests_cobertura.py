@@ -36,11 +36,13 @@ class ZonaTests(TestCase):
         """Un AdministrativeArea generico no le sirve a Google para cruzarlo
         con la comuna de quien busca. Una lista de City si."""
         area = seo.area_servida()
-        self.assertEqual(len(area), len(seo.COMUNAS))
-        for ciudad in area:
-            self.assertEqual(ciudad["@type"], "City")
+        ciudades = [a for a in area if a["@type"] == "City"]
+        self.assertEqual(len(ciudades), len(seo.COMUNAS))
+        for ciudad in ciudades:
             self.assertIn(ciudad["name"], seo.COMUNAS)
             self.assertEqual(ciudad["addressCountry"], "CL")
+        # 16-10-2026: Francisco trabaja en todo Chile; las comunas van primero.
+        self.assertEqual(area[-1], {"@type": "Country", "name": "Chile"})
 
     def test_el_json_ld_del_negocio_publica_las_comunas(self):
         datos = seo.datos_del_negocio()
@@ -77,6 +79,22 @@ class PantallasTests(TestCase):
             pie = html.split("<footer", 1)[1].split("</footer>", 1)[0]
             self.assertIn("Ciudad de los Valles", pie, ruta)
             self.assertIn("Lampa", pie, ruta)
+
+    def test_todo_chile_se_dice_en_el_pie_la_faq_y_los_servicios(self):
+        """Francisco confirmo el 16-10-2026 que trabaja en todo Chile."""
+        from services import catalogo
+        rutas = ["/", "/servicios/", "/trabajos/",
+                 "/servicios/%s/" % catalogo.SERVICIOS[0]["slug"]]
+        for ruta in rutas:
+            html = self.client.get(ruta).content.decode()
+            pie = html.split("<footer", 1)[1].split("</footer>", 1)[0]
+            self.assertIn(seo.COBERTURA_NACIONAL, pie, ruta)
+        detalle = self.client.get(rutas[-1]).content.decode()
+        donde = detalle.split("Dónde trabajamos", 1)[1].split("</div>", 1)[0]
+        self.assertIn(seo.COBERTURA_NACIONAL, donde)
+        home = self.client.get("/").content.decode()
+        faq = home.split("¿En qué zonas atienden?", 1)[1][:600]
+        self.assertIn("resto de Chile", faq)
 
     def test_la_respuesta_de_la_faq_nombra_las_comunas(self):
         html = self.client.get("/").content.decode()

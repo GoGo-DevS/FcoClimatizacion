@@ -15,6 +15,7 @@ def site_settings(request):
         "zona_corta": seo.ZONA_CORTA,
         "zona_principal": seo.ZONA_PRINCIPAL,
         "comunas": seo.COMUNAS,
+        "cobertura_nacional": seo.COBERTURA_NACIONAL,
         "WHATSAPP_PHONE_CLEAN": settings.WHATSAPP_PHONE.replace("+", "").replace(" ", ""),
         # El JSON-LD del negocio va en TODAS las paginas: si viviera en cada
         # vista, la primera que se olvide queda sin datos estructurados.

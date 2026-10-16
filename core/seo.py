@@ -55,6 +55,11 @@ _LUGARES = [ZONA_PRINCIPAL] + COMUNAS
 ZONA = ", ".join(_LUGARES[:-1]) + " y " + _LUGARES[-1]
 ZONA_CORTA = f"{ZONA_PRINCIPAL}, {COMUNAS[0]} y alrededores"
 
+# 16-10-2026: Francisco confirmo que trabaja en TODO CHILE. Las comunas se
+# quedan (son lo que la gente busca y donde esta su base: una pagina por cada
+# region seria contenido de relleno), y esto se agrega donde se dice la zona.
+COBERTURA_NACIONAL = "También hacemos trabajos en el resto de Chile, coordinando la visita."
+
 
 def whatsapp_url(texto="Hola, quiero cotizar aire acondicionado."):
     from urllib.parse import quote
@@ -69,8 +74,9 @@ def area_servida():
     cercanas" no le sirve a Google para nada: no puede cruzarlo con la comuna
     de quien busca. Una lista de ciudades con nombre si.
     """
-    return [{"@type": "City", "name": c, "addressRegion": "Región Metropolitana",
-             "addressCountry": "CL"} for c in COMUNAS]
+    ciudades = [{"@type": "City", "name": c, "addressRegion": "Región Metropolitana",
+                 "addressCountry": "CL"} for c in COMUNAS]
+    return ciudades + [{"@type": "Country", "name": "Chile"}]
 
 
 def datos_del_negocio(request=None):

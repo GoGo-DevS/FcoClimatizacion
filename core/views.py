@@ -17,8 +17,7 @@ PREGUNTAS_HOME = [
     ("¿Hacen diagnóstico antes de cotizar una reparación?",
      "Sí. Primero se revisa el equipo y se te dice qué tiene; recién ahí se cotiza."),
     ("¿En qué zonas atienden?",
-     f"{seo.ZONA}. Si estás fuera de esas comunas, escríbenos igual y te "
-     "confirmamos antes de agendar."),
+     f"Nuestra base está en {seo.ZONA}. {seo.COBERTURA_NACIONAL}"),
     ("¿Emiten factura?",
      "Sí, los trabajos se entregan con factura y con garantía."),
 ]
