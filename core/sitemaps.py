@@ -4,6 +4,7 @@ from django.urls import reverse
 
 from projects.models import Project
 from projects.utils import is_segmented_title
+from core import zonas
 from services import catalogo
 
 
@@ -31,6 +32,20 @@ class Servicios(Sitemap):
         return reverse("services:detail", args=[item["slug"]])
 
 
+class Zonas(Sitemap):
+    # Igual que los servicios: es una pagina comercial, la que responde a
+    # "aire acondicionado <sector>".
+    priority = 0.9
+    changefreq = "monthly"
+    protocol = "https"
+
+    def items(self):
+        return zonas.ZONAS
+
+    def location(self, item):
+        return zonas.ruta(item)
+
+
 class Trabajos(Sitemap):
     priority = 0.5
     changefreq = "monthly"
@@ -48,4 +63,4 @@ class Trabajos(Sitemap):
         return item.created_at
 
 
-SITEMAPS = {"paginas": PaginasFijas(), "servicios": Servicios(), "trabajos": Trabajos()}
+SITEMAPS = {"paginas": PaginasFijas(), "servicios": Servicios(), "zonas": Zonas(), "trabajos": Trabajos()}

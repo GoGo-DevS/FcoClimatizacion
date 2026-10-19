@@ -105,10 +105,15 @@ class PantallasTests(TestCase):
     def test_el_titulo_de_la_portada_nombra_la_comuna(self):
         """El <title> es lo que Google muestra en el resultado y lo que mas
         pesa para decidir a quien se lo muestra. Decia "en Santiago", la
-        ciudad entera."""
+        ciudad entera.
+
+        19-10-2026: la portada nombra Pudahuel y NO Ciudad de los Valles,
+        porque el sector tiene su propia pagina (core/tests_zona.py) y dos
+        paginas con el mismo titulo compiten entre si."""
         html = self.client.get("/").content.decode()
         titulo = html.split("<title>", 1)[1].split("</title>", 1)[0]
-        self.assertIn("Ciudad de los Valles", titulo)
+        self.assertIn("Pudahuel", titulo)
+        self.assertNotIn("Ciudad de los Valles", titulo)
         self.assertNotIn("en Santiago", titulo)
         # Google corta alrededor de los 60 caracteres
         self.assertLessEqual(len(titulo), 75, titulo)

@@ -50,7 +50,7 @@
       {% endcomment %}
       <h2 class="h5 fw-bold mt-4 mb-2">Dónde trabajamos</h2>
       <p class="mb-2">
-        {{ zona_principal }} es nuestra zona principal. También llegamos a estas comunas:
+        <a href="{{ url_zona_principal }}">{{ zona_principal }}</a> es nuestra zona principal. También llegamos a estas comunas:
       </p>
       <ul class="lista-punto lista-comunas">
         {% for comuna in comunas %}<li>{{ comuna }}</li>{% endfor %}

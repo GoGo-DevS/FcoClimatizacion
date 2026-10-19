@@ -74,9 +74,13 @@ def area_servida():
     cercanas" no le sirve a Google para nada: no puede cruzarlo con la comuna
     de quien busca. Una lista de ciudades con nombre si.
     """
+    from core import zonas
     ciudades = [{"@type": "City", "name": c, "addressRegion": "Región Metropolitana",
                  "addressCountry": "CL"} for c in COMUNAS]
-    return ciudades + [{"@type": "Country", "name": "Chile"}]
+    # Los sectores (Ciudad de los Valles) van como Place dentro de su comuna:
+    # no son ciudades, y declararlos como City seria falso.
+    sectores = [zonas.lugar_schema(z) for z in zonas.ZONAS]
+    return sectores + ciudades + [{"@type": "Country", "name": "Chile"}]
 
 
 def datos_del_negocio(request=None):

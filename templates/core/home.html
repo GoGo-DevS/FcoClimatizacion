@@ -67,7 +67,7 @@
       <div class="hero-comunas">
         <span class="hero-comunas__titulo">Llegamos a</span>
         <ul class="hero-comunas__lista">
-          <li class="es-principal">{{ zona_principal }}</li>
+          <li class="es-principal"><a href="{{ url_zona_principal }}">{{ zona_principal }}</a></li>
           {% for c in comunas %}<li>{{ c }}</li>{% endfor %}
         </ul>
       </div>

@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% load static project_tags %}
+
+{% comment %}
+  La pagina de un sector (core/zonas.py). Todo sale de los datos de la zona:
+  agregar otra comuna no requiere tocar esta plantilla.
+{% endcomment %}
+{% block content %}
+<div class="container">
+  {% comment %} La miga es el H1, igual que en el BreadcrumbList. {% endcomment %}
+  <nav aria-label="Ruta" class="migas py-3">
+    <a href="/">Inicio</a> <span aria-hidden="true">›</span>
+    <span>{{ z.h1 }}</span>
+  </nav>
+
+  <div class="row g-4 g-lg-5 align-items-start">
+    <div class="col-lg-7">
+      <span class="kicker">{{ z.nombre }}, {{ z.comuna }}</span>
+      <h1 class="h2 fw-bold mb-2">{{ z.h1 }}</h1>
+      <p class="lead-corto text-secondary">{{ z.bajada }}</p>
+
+      <div class="d-flex flex-wrap gap-2 my-3">
+        <a class="btn btn-success btn-press" target="_blank" rel="noopener"
+           href="https://wa.me/{{ WHATSAPP_PHONE_CLEAN }}?text=Hola,%20estoy%20en%20{{ z.nombre|urlencode }}%20y%20quiero%20cotizar%20aire%20acondicionado.">
+          Cotizar por WhatsApp
+        </a>
+        <a class="btn btn-outline-primary btn-press" href="tel:{{ WHATSAPP_PHONE }}">Llamar</a>
+      </div>
+
+      {% for parrafo in z.intro %}<p>{{ parrafo }}</p>{% endfor %}
+    </div>
+
+    <div class="col-lg-5">
+      <figure class="figura-servicio mb-3">
+        <img src="{% static 'img/trabajos/unidad-exterior.webp' %}" width="1000" height="750"
+             alt="{{ z.h1 }}: unidad exterior instalada por FCO Climatización"
+             fetchpriority="high" decoding="async">
+      </figure>
+    </div>
+  </div>
+
+  {% comment %}
+    Los cuatro servicios, cada uno enlazado a su pagina. El texto del enlace es
+    el nombre del servicio: es la pagina que mejor responde a esa busqueda.
+  {% endcomment %}
+  <section class="mt-5" aria-labelledby="servicios-zona">
+    <h2 id="servicios-zona" class="h4 fw-bold mb-3">Servicios en {{ z.nombre }}</h2>
+    <div class="row g-3">
+      {% for s in servicios %}
+        <div class="col-12 col-md-6">
+          <a class="servicio-card servicio-card--enlace d-block h-100" href="{% url 'services:detail' s.slug %}">
+            <span class="servicio-icono" aria-hidden="true">{{ s.icono|safe }}</span>
+            <h3 class="h5 fw-bold mb-2">{{ s.nombre }}</h3>
+            <p class="text-secondary mb-2">{{ s.bajada }}</p>
+            <span class="enlace-flecha">Ver detalle</span>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <div class="row mt-4">
+    <div class="col-lg-8">
+      {% for sec in z.secciones %}
+        <h2 class="h4 fw-bold mt-4 mb-2">{{ sec.titulo }}</h2>
+        {% for parrafo in sec.parrafos %}<p>{{ parrafo }}</p>{% endfor %}
+        {% if sec.puntos %}
+        <ul class="lista-punto">
+          {% for item in sec.puntos %}<li>{{ item }}</li>{% endfor %}
+        </ul>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if trabajos %}
+  <section class="mt-5" aria-labelledby="trabajos-zona">
+    <div class="d-flex align-items-end justify-content-between flex-wrap gap-2 mb-3">
+      <h2 id="trabajos-zona" class="h4 fw-bold mb-0">Trabajos que hemos hecho</h2>
+      <a href="{% url 'projects:list' %}" class="btn btn-outline-primary btn-press">Ver todos</a>
+    </div>
+    <div class="row g-3">
+      {% for p in trabajos %}
+        {% with img=p|safe_cover %}
+          {% if img %}
+          <div class="col-6 col-lg-4">
+            <a class="trabajo-card" href="{% url 'projects:detail' p.id %}">
+              <img src="{{ img.image.url }}" alt="{{ img.alt|default:p.title }}"
+                   loading="lazy" decoding="async">
+              <span class="trabajo-card__pie">{{ p.title }}</span>
+            </a>
+          </div>
+          {% endif %}
+        {% endwith %}
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% comment %} FAQ visible: es la misma que va marcada como FAQPage. {% endcomment %}
+  <section class="mt-5">
+    <h2 class="h4 fw-bold mb-3">Preguntas frecuentes en {{ z.nombre }}</h2>
+    <div class="faq-lista">
+      {% for pregunta, respuesta in z.preguntas %}
+        <details class="faq-item"{% if forloop.first %} open{% endif %}>
+          <summary>{{ pregunta }}</summary>
+          <p class="mb-0">{{ respuesta }}</p>
+        </details>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="mt-5">
+    <h2 class="h5 fw-bold mb-2">También llegamos cerca de {{ z.nombre }}</h2>
+    <ul class="lista-punto lista-comunas">
+      {% for comuna in otras_comunas %}<li>{{ comuna }}</li>{% endfor %}
+    </ul>
+    <p class="mb-0">{{ cobertura_nacional }}</p>
+  </section>
+
+  {% include "core/_cta.html" %}
+</div>
+{% endblock %}

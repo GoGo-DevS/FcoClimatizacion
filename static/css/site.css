@@ -1244,3 +1244,22 @@ textarea.form-control:focus {
    (con `columns` no pasa nada: el grid lo ignora). */
 .lista-comunas { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1.5rem; }
 @media (min-width: 768px) { .lista-comunas { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* 19-10-2026 — la pildora de Ciudad de los Valles enlaza a su pagina. Sin
+   esto el enlace hereda el azul del link sobre el azul de la pildora. */
+.hero-comunas__lista li.es-principal a {
+  color: inherit;
+  text-decoration: none;
+}
+.hero-comunas__lista li.es-principal a:hover,
+.hero-comunas__lista li.es-principal a:focus-visible {
+  text-decoration: underline;
+}
+.footer-zona a {
+  color: var(--fco-navy);
+  font-weight: 600;
+}
+.footer-zona a:hover,
+.footer-zona a:focus-visible {
+  color: var(--fco-blue);
+}

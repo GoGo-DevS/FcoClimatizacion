@@ -2,7 +2,7 @@ import json
 
 from django.conf import settings
 
-from . import seo
+from . import seo, zonas
 
 
 def site_settings(request):
@@ -15,6 +15,9 @@ def site_settings(request):
         "zona_corta": seo.ZONA_CORTA,
         "zona_principal": seo.ZONA_PRINCIPAL,
         "comunas": seo.COMUNAS,
+        # La pagina del sector principal: el pie, la portada y cada servicio
+        # la enlazan, que es como Google sabe que es la pagina importante.
+        "url_zona_principal": zonas.ruta(zonas.ZONAS[0]),
         "cobertura_nacional": seo.COBERTURA_NACIONAL,
         "WHATSAPP_PHONE_CLEAN": settings.WHATSAPP_PHONE.replace("+", "").replace(" ", ""),
         # El JSON-LD del negocio va en TODAS las paginas: si viviera en cada
