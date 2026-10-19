@@ -79,7 +79,7 @@ def area_servida():
                  "addressCountry": "CL"} for c in COMUNAS]
     # Los sectores (Ciudad de los Valles) van como Place dentro de su comuna:
     # no son ciudades, y declararlos como City seria falso.
-    sectores = [zonas.lugar_schema(z) for z in zonas.ZONAS]
+    sectores = [zonas.lugar_schema(z) for z in zonas.ZONAS if not z.get("es_comuna")]
     return sectores + ciudades + [{"@type": "Country", "name": "Chile"}]
 
 

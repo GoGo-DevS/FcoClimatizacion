@@ -18,6 +18,8 @@ def site_settings(request):
         # La pagina del sector principal: el pie, la portada y cada servicio
         # la enlazan, que es como Google sabe que es la pagina importante.
         "url_zona_principal": zonas.ruta(zonas.ZONAS[0]),
+        "comunas_enlazadas": zonas.enlazar(seo.COMUNAS),
+        "zonas_pie": [(z["h1"], zonas.ruta(z)) for z in zonas.ZONAS],
         "cobertura_nacional": seo.COBERTURA_NACIONAL,
         "WHATSAPP_PHONE_CLEAN": settings.WHATSAPP_PHONE.replace("+", "").replace(" ", ""),
         # El JSON-LD del negocio va en TODAS las paginas: si viviera en cada

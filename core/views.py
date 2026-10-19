@@ -80,7 +80,7 @@ def zona(request, slug):
         "servicios": catalogo.SERVICIOS,
         "trabajos": _destacados(),
         # Las demas comunas, para quien esta cerca pero no en el sector.
-        "otras_comunas": [c for c in seo.COMUNAS if c != datos["comuna"]],
+        "otras_comunas": zonas.enlazar([c for c in seo.COMUNAS if c != datos["comuna"]]),
         "meta_title": datos["titulo_seo"],
         "meta_description": datos["meta"],
         "canonical": url,

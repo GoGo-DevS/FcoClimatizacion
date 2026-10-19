@@ -112,8 +112,11 @@
 
   <section class="mt-5">
     <h2 class="h5 fw-bold mb-2">También llegamos cerca de {{ z.nombre }}</h2>
+    {% if z.slug != "ciudad-de-los-valles" %}
+      <p class="mb-2">Nuestra base está en <a href="{{ url_zona_principal }}">{{ zona_principal }}</a>.</p>
+    {% endif %}
     <ul class="lista-punto lista-comunas">
-      {% for comuna in otras_comunas %}<li>{{ comuna }}</li>{% endfor %}
+      {% for comuna, ruta in otras_comunas %}<li>{% if ruta %}<a href="{{ ruta }}">{{ comuna }}</a>{% else %}{{ comuna }}{% endif %}</li>{% endfor %}
     </ul>
     <p class="mb-0">{{ cobertura_nacional }}</p>
   </section>

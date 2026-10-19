@@ -97,6 +97,83 @@ ZONAS = [
              "Sí, los trabajos se entregan con factura y con garantía."),
         ],
     },
+    {
+        # 19-10-2026: Diego confirmo que Francisco llega a Maipu. Es la comuna
+        # con mas busquedas del autocompletado: instalacion, mantencion,
+        # reparacion y "tecnico aire acondicionado maipu".
+        "slug": "maipu",
+        "nombre": "Maipú",
+        "comuna": "Maipú",
+        "es_comuna": True,
+        "titulo_seo": "Aire acondicionado en Maipú: instalación y mantención | FCO",
+        "meta": (
+            "Técnico de aire acondicionado en Maipú: instalación, mantención y "
+            "reparación de equipos split en casas, departamentos y locales. Factura "
+            "y garantía."
+        ),
+        "h1": "Aire acondicionado en Maipú",
+        "bajada": (
+            "Instalación, mantención y reparación de aire acondicionado en Maipú, "
+            "para casas, departamentos, oficinas y locales."
+        ),
+        "intro": [
+            "Atendemos Maipú desde nuestra base en Ciudad de los Valles, en la comuna "
+            "vecina de Pudahuel. Coordinamos la visita por WhatsApp y llegamos con lo "
+            "necesario para el trabajo que se conversó.",
+            "Hacemos instalaciones nuevas, mantención de equipos que ya tienes y "
+            "reparación con diagnóstico previo. Todo se entrega probado, con factura "
+            "y con garantía.",
+        ],
+        "secciones": [
+            {
+                "titulo": "Instalar aire acondicionado en un departamento",
+                "parrafos": [
+                    "En un departamento la pregunta no es solo dónde va el equipo, "
+                    "sino dónde puede ir la unidad exterior. Antes de la visita "
+                    "conviene tener claro esto:",
+                ],
+                "puntos": [
+                    "Si el edificio permite unidades exteriores en el balcón, la logia "
+                    "o la fachada: lo define el reglamento de copropiedad, y conviene "
+                    "preguntarlo a la administración",
+                    "Por dónde puede pasar la cañería sin romper más de lo necesario",
+                    "Hacia dónde va el agua del drenaje, para que no caiga al balcón "
+                    "de abajo",
+                    "Si el enchufe o el circuito eléctrico aguantan el equipo",
+                ],
+            },
+            {
+                "titulo": "Reparar o cambiar: cuándo conviene cada cosa",
+                "parrafos": [
+                    "Un equipo que dejó de enfriar no siempre está perdido. Muchas "
+                    "veces es un filtro tapado, el drenaje o una falla eléctrica que "
+                    "se arregla en la visita. Otras veces la reparación cuesta casi "
+                    "lo mismo que un equipo nuevo.",
+                    "Por eso primero se hace el diagnóstico y se te dice qué tiene el "
+                    "equipo. Con eso en la mano decides tú, y te decimos qué conviene "
+                    "aunque la respuesta sea no repararlo.",
+                ],
+            },
+        ],
+        "preguntas": [
+            ("¿Atienden en Maipú?",
+             "Sí. Atendemos Maipú desde nuestra base en Ciudad de los Valles, "
+             "Pudahuel. Escríbenos por WhatsApp y coordinamos la visita."),
+            ("¿Instalan aire acondicionado en departamentos de Maipú?",
+             "Sí. Antes conviene preguntarle a la administración dónde permite el "
+             "reglamento poner la unidad exterior, para planificar la instalación "
+             "con eso."),
+            ("¿Hacen mantención de aire acondicionado en Maipú?",
+             "Sí: limpieza de filtros, unidad interior y exterior, revisión del "
+             "drenaje y prueba de funcionamiento, con informe de lo revisado."),
+            ("¿Cuánto cuesta instalar un aire acondicionado en Maipú?",
+             "Depende del equipo, del largo de la cañería, de dónde va la unidad "
+             "exterior y de la conexión eléctrica. Se cotiza después de ver el lugar, "
+             "con el detalle antes de hacer el trabajo."),
+            ("¿Emiten factura?",
+             "Sí, los trabajos se entregan con factura y con garantía."),
+        ],
+    },
 ]
 
 _POR_SLUG = {z["slug"]: z for z in ZONAS}
@@ -111,13 +188,27 @@ def ruta(z):
     return f"/aire-acondicionado-{z['slug']}/"
 
 
+def enlazar(nombres):
+    """[(nombre, ruta o None)]: cada comuna con su pagina, si la tiene.
+
+    Las listas de comunas del sitio enlazan solas a la pagina de la comuna en
+    cuanto existe. Sin pagina, el nombre va sin enlace: nunca a un 404.
+    """
+    rutas = {z["nombre"]: ruta(z) for z in ZONAS}
+    return [(n, rutas.get(n)) for n in nombres]
+
+
 def lugar_schema(z):
     """El sector como `Place` dentro de su comuna.
 
     Ciudad de los Valles no es una comuna, es un sector de Pudahuel: declararlo
     como `City` seria falso. `containedInPlace` es lo que le dice a Google
     donde queda.
+    Una zona que ES comuna (Maipu) va como `City`.
     """
+    if z.get("es_comuna"):
+        return {"@type": "City", "name": z["nombre"],
+                "addressRegion": "Región Metropolitana", "addressCountry": "CL"}
     return {
         "@type": "Place",
         "name": z["nombre"],

@@ -68,7 +68,7 @@
         <span class="hero-comunas__titulo">Llegamos a</span>
         <ul class="hero-comunas__lista">
           <li class="es-principal"><a href="{{ url_zona_principal }}">{{ zona_principal }}</a></li>
-          {% for c in comunas %}<li>{{ c }}</li>{% endfor %}
+          {% for c, ruta in comunas_enlazadas %}<li>{% if ruta %}<a href="{{ ruta }}">{{ c }}</a>{% else %}{{ c }}{% endif %}</li>{% endfor %}
         </ul>
       </div>
     </div>

@@ -31,7 +31,7 @@ class PaginaZonaTests(TestCase):
 
     def test_una_zona_que_no_existe_da_404(self):
         # Nunca una pagina vacia: una comuna sin confirmar no tiene pagina.
-        self.assertEqual(self.client.get("/aire-acondicionado-maipu/").status_code, 404)
+        self.assertEqual(self.client.get("/aire-acondicionado-renca/").status_code, 404)
 
     def test_titulo_h1_y_meta_nombran_el_sector(self):
         titulo = self.html.split("<title>", 1)[1].split("</title>", 1)[0]
@@ -102,3 +102,50 @@ class EnlacesHaciaLaZonaTests(TestCase):
 
     def test_la_ruta_sale_de_los_datos(self):
         self.assertEqual(zonas.ruta(zonas.ZONAS[0]), RUTA)
+
+
+class MaipuTests(TestCase):
+    """19-10-2026: Maipu confirmada. Es comuna, no sector."""
+    RUTA = "/aire-acondicionado-maipu/"
+
+    def setUp(self):
+        self.r = self.client.get(self.RUTA)
+        self.html = self.r.content.decode()
+
+    def test_existe_con_su_titulo(self):
+        self.assertEqual(self.r.status_code, 200)
+        titulo = self.html.split("<title>", 1)[1].split("</title>", 1)[0]
+        self.assertIn("Maipú", titulo)
+        self.assertLessEqual(len(titulo), 60, titulo)
+
+    def test_es_city_y_no_place(self):
+        servicio = next(b for b in _json_ld(self.html) if b.get("@type") == "Service")
+        self.assertEqual(servicio["areaServed"]["@type"], "City")
+        # y el negocio no la declara dos veces
+        nombres = [a["name"] for a in seo.datos_del_negocio()["areaServed"]]
+        self.assertEqual(nombres.count("Maipú"), 1)
+
+    def test_no_se_lista_a_si_misma_y_enlaza_a_la_base(self):
+        cerca = self.html.split("También llegamos cerca", 1)[1]
+        self.assertNotIn(">Maipú<", cerca)
+        self.assertIn(f'href="{RUTA}"', cerca)
+
+    def test_no_copia_el_texto_de_ciudad_de_los_valles(self):
+        """Dos paginas con el mismo texto compiten entre si (regla 1)."""
+        cdlv = zonas.zona("ciudad-de-los-valles")
+        maipu = zonas.zona("maipu")
+        textos_maipu = maipu["intro"] + [s["titulo"] for s in maipu["secciones"]]
+        for t in cdlv["intro"] + [s["titulo"] for s in cdlv["secciones"]]:
+            self.assertNotIn(t, textos_maipu)
+
+    def test_la_portada_y_los_servicios_la_enlazan(self):
+        self.assertIn(f'href="{self.RUTA}"', self.client.get("/").content.decode())
+        self.assertIn(f'href="{self.RUTA}"', self.client.get(
+            "/servicios/mantencion-aire-acondicionado/").content.decode())
+
+    def test_esta_en_el_sitemap(self):
+        self.assertIn(f"{self.RUTA}</loc>", self.client.get("/sitemap.xml").content.decode())
+
+    def test_una_comuna_sin_pagina_va_sin_enlace(self):
+        """Nunca un enlace a un 404."""
+        self.assertIn(("Renca", None), zonas.enlazar(["Renca"]))

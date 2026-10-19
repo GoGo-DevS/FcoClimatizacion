@@ -53,7 +53,7 @@
         <a href="{{ url_zona_principal }}">{{ zona_principal }}</a> es nuestra zona principal. También llegamos a estas comunas:
       </p>
       <ul class="lista-punto lista-comunas">
-        {% for comuna in comunas %}<li>{{ comuna }}</li>{% endfor %}
+        {% for comuna, ruta in comunas_enlazadas %}<li>{% if ruta %}<a href="{{ ruta }}">{{ comuna }}</a>{% else %}{{ comuna }}{% endif %}</li>{% endfor %}
       </ul>
       <p class="mb-2">{{ cobertura_nacional }}</p>
     </div>
