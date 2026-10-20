@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static project_tags %}
+
+{% comment %}
+  GoGoDevS Tree: el link de la biografia de Instagram.
+
+  Sin menu, sin pie y sin el WhatsApp flotante: quien entra desde la bio viene
+  a elegir UN camino. El orden es un embudo: quien es (logo y zona), la accion
+  que importa (WhatsApp, a lo ancho), la prueba (fotos de trabajos reales) y al
+  final los caminos secundarios.
+
+  noindex: es una lista de enlaces sin contenido propio. Para Google ya estan
+  la portada y las paginas de servicio y de zona; esta competiria con ellas.
+{% endcomment %}
+
+{% block robots %}noindex,follow{% endblock %}
+{% block nav %}{% endblock %}
+{% block pie %}{% endblock %}
+{% block flotante %}{% endblock %}
+
+{% block content %}
+<div class="tree">
+
+  <header class="tree-cabecera">
+    <img class="tree-logo" src="{% static 'img/logo-fco-pie-ajustado.png' %}"
+         alt="FCO Climatización" width="820" height="270">
+    <p class="tree-zona">
+      <span class="hero-chip__punto" aria-hidden="true"></span>
+      {{ zona_corta }}
+    </p>
+    <p class="tree-datos">Instalación, mantención y reparación · Factura y garantía</p>
+  </header>
+
+  <a class="tree-principal" target="_blank" rel="noopener"
+     href="https://wa.me/{{ WHATSAPP_PHONE_CLEAN }}?text=Hola,%20vengo%20de%20Instagram%20y%20quiero%20cotizar%20aire%20acondicionado.">
+    <span class="tree-principal__titulo">Cotizar por WhatsApp</span>
+    <span class="tree-principal__sub">Cuéntanos qué necesitas y en qué comuna estás</span>
+  </a>
+
+  <a class="tree-segunda" href="tel:{{ WHATSAPP_PHONE }}">Llamar ahora</a>
+
+  {% comment %}
+    La prueba son los trabajos, no un texto. La tira se desliza con el dedo:
+    seis fotos apiladas empujarian todos los enlaces fuera de la pantalla.
+  {% endcomment %}
+  {% if trabajos %}
+  <section class="tree-trabajos" aria-label="Trabajos realizados">
+    <div class="tree-tira">
+      {% for p in trabajos %}
+        {% with img=p|safe_cover %}
+          {% if img %}
+          <a class="tree-foto" href="{% url 'projects:detail' p.id %}">
+            <img src="{{ img.image.url }}" alt="{{ img.alt|default:p.title }}"
+                 width="200" height="250" loading="lazy" decoding="async">
+          </a>
+          {% endif %}
+        {% endwith %}
+      {% endfor %}
+    </div>
+    <a class="tree-vertodo" href="{% url 'projects:list' %}">Ver todos los trabajos →</a>
+  </section>
+  {% endif %}
+
+  <nav class="tree-lista" aria-label="Servicios">
+    <p class="tree-rotulo">Servicios</p>
+    {% for s in servicios %}
+      <a class="tree-item" href="{% url 'services:detail' s.slug %}">
+        <span class="tree-item__ico" aria-hidden="true">{{ s.icono|safe }}</span>
+        <span>{{ s.nombre }}</span>
+        <span class="tree-flecha" aria-hidden="true">›</span>
+      </a>
+    {% endfor %}
+    <a class="tree-item" href="/#capacidad">
+      <span class="tree-item__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h2M12 11h2M16 11h0M8 15h2M12 15h2M8 18h2M12 18h4"/></svg></span>
+      <span>¿Qué capacidad necesito? Calculadora</span>
+      <span class="tree-flecha" aria-hidden="true">›</span>
+    </a>
+  </nav>
+
+  <nav class="tree-lista" aria-label="Dónde trabajamos">
+    <p class="tree-rotulo">Dónde trabajamos</p>
+    {% for z, ruta in zonas_links %}
+      <a class="tree-item" href="{{ ruta }}">
+        <span class="tree-item__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21.5s7-6.1 7-11a7 7 0 1 0-14 0c0 4.9 7 11 7 11z"/><circle cx="12" cy="10.3" r="2.6"/></svg></span>
+        <span>{{ z.h1 }}</span>
+        <span class="tree-flecha" aria-hidden="true">›</span>
+      </a>
+    {% endfor %}
+  </nav>
+
+  <footer class="tree-pie">
+    <a href="/">fcoclimatizacion.cl</a>
+    <small>Sitio desarrollado por
+      <a href="https://www.gogodevs.cl/" target="_blank" rel="noopener">GoGoDevS</a></small>
+  </footer>
+</div>
+{% endblock %}
+
+{% block scripts %}{% if GA4_MEASUREMENT_ID %}
+<script src="{% static 'js/tree.js' %}" defer></script>
+{% endif %}{% endblock %}

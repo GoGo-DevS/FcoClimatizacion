@@ -94,6 +94,24 @@ def zona(request, slug):
     })
 
 
+def links(request):
+    """GoGoDevS Tree: la pagina que va en la biografia de Instagram.
+
+    Quien llega desde la bio viene a elegir UN camino. Por eso va sin menu ni
+    pie: le ofrecerian los mismos caminos dos veces.
+    """
+    return render(request, "core/links.html", {
+        "servicios": catalogo.SERVICIOS,
+        "zonas_links": [(z, zonas.ruta(z)) for z in zonas.ZONAS],
+        "trabajos": _destacados(),
+        "meta_title": "FCO Climatización | Aire acondicionado en Ciudad de los Valles",
+        "meta_description": (
+            "Cotiza por WhatsApp la instalación, mantención o reparación de tu aire "
+            "acondicionado. Ciudad de los Valles, Pudahuel y alrededores."),
+        "canonical": f"{seo.DOMINIO}/links/",
+    })
+
+
 def robots(request):
     """robots.txt con el sitemap declarado."""
     lineas = [

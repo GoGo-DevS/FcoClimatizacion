@@ -10,6 +10,8 @@ from core.sitemaps import SITEMAPS
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", core_views.home, name="home"),
+    # El link de la bio de Instagram (GoGoDevS Tree).
+    path("links/", core_views.links, name="links"),
     # Una pagina por sector, con la keyword en la URL (core/zonas.py).
     path("aire-acondicionado-<slug:slug>/", core_views.zona, name="zona"),
     path("", include("leads.urls")),

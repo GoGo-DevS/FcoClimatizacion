@@ -13,7 +13,7 @@
   <meta name="description" content="{% block meta_description %}{{ meta_description|default:"Instalación, mantención y reparación de aire acondicionado en la Región Metropolitana y comunas cercanas. Con factura y garantía." }}{% endblock %}">
   <link rel="canonical" href="{% block canonical %}{{ canonical|default:request.build_absolute_uri }}{% endblock %}">
   <meta name="theme-color" content="#081028">
-  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="robots" content="{% block robots %}index,follow,max-image-preview:large{% endblock %}">
 
   {% comment %}
     MEDICION. Las dos salen de variables de entorno y van vacias por defecto:
@@ -77,6 +77,7 @@
 </head>
 <body class="site-body">
 
+{% block nav %}
 <nav class="navbar navbar-expand-lg sticky-top site-nav">
   <div class="container">
     <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="/">
@@ -119,11 +120,13 @@
   </div>
 </nav>
 <div class="nav-overlay d-lg-none" id="navOverlay" aria-hidden="true"></div>
+{% endblock nav %}
 
 <main class="py-4">
   {% block content %}{% endblock %}
 </main>
 
+{% block pie %}
 <footer class="site-footer mt-5">
   <div class="container">
     <div class="row g-4 align-items-start">
@@ -167,15 +170,19 @@
     <p class="text-muted small text-center mt-4 mb-0">Sitio desarrollado por <a href="https://www.gogodevs.cl/" target="_blank" rel="noopener" class="text-muted">GoGoDevS</a></p>
   </div>
 </footer>
+{% endblock pie %}
 
+{% block flotante %}
 <!-- WhatsApp flotante -->
 <a target="_blank"
    href="https://wa.me/{{ WHATSAPP_PHONE_CLEAN }}?text=Hola%20quiero%20cotizar%20aire%20acondicionado."
    class="wa-float btn btn-success rounded-pill shadow btn-press">
   WhatsApp
 </a>
+{% endblock flotante %}
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{% static 'js/site.js' %}" defer></script>
+{% block scripts %}{% endblock scripts %}
 </body>
 </html>

@@ -1263,3 +1263,74 @@ textarea.form-control:focus {
 .footer-zona a:focus-visible {
   color: var(--fco-blue);
 }
+
+/* ===== GoGoDevS Tree (/links/) — 19-10-2026 =====
+   Fondo en la tinta del logo, como el hero de la portada. Columna angosta:
+   se abre desde el telefono, al salir de la bio de Instagram. */
+body:has(.tree) { background: var(--fco-ink); }
+body:has(.tree) main { padding: 0 !important; }
+.tree {
+  max-width: 460px;
+  margin: 0 auto;
+  padding: 2rem 1rem 2.5rem;
+  color: #DCE8FA;
+}
+.tree-cabecera { text-align: center; margin-bottom: 1.5rem; }
+.tree-logo {
+  width: 220px; height: auto;
+  background: #fff; border-radius: 16px; padding: .75rem 1rem;
+}
+.tree-zona {
+  display: inline-flex; align-items: center; gap: .45rem;
+  margin: 1rem 0 .35rem; font-weight: 700; color: #fff;
+}
+.tree-datos { margin: 0; font-size: .9rem; color: var(--fco-azul-claro); }
+.tree-principal {
+  display: block; text-align: center; text-decoration: none;
+  background: var(--fco-whatsapp); color: #06301A;
+  border-radius: 16px; padding: 1rem 1.25rem; margin-bottom: .75rem;
+  box-shadow: 0 10px 30px rgba(37, 211, 102, .25);
+}
+.tree-principal:hover, .tree-principal:focus-visible { color: #06301A; filter: brightness(1.05); }
+.tree-principal__titulo { display: block; font-size: 1.2rem; font-weight: 800; }
+.tree-principal__sub { display: block; font-size: .88rem; font-weight: 600; }
+.tree-segunda {
+  display: block; text-align: center; text-decoration: none; font-weight: 700;
+  color: #fff; border: 1px solid rgba(127, 178, 255, .35);
+  border-radius: 14px; padding: .8rem 1rem; margin-bottom: 1.5rem;
+}
+.tree-segunda:hover, .tree-segunda:focus-visible { color: #fff; background: rgba(255, 255, 255, .06); }
+.tree-trabajos { margin-bottom: 1.5rem; }
+.tree-tira {
+  display: flex; gap: .6rem; overflow-x: auto; scroll-snap-type: x mandatory;
+  padding-bottom: .4rem; scrollbar-width: none;
+}
+.tree-tira::-webkit-scrollbar { display: none; }
+.tree-foto { flex: 0 0 42%; scroll-snap-align: start; }
+.tree-foto img {
+  width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover;
+  border-radius: 12px; display: block;
+}
+.tree-vertodo {
+  display: inline-block; margin-top: .5rem; font-size: .9rem; font-weight: 700;
+  color: var(--fco-azul-claro); text-decoration: none;
+}
+.tree-lista { margin-bottom: 1.25rem; }
+.tree-rotulo {
+  margin: 0 0 .5rem; font-size: .75rem; font-weight: 800;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--fco-azul-claro);
+}
+.tree-item {
+  display: flex; align-items: center; gap: .75rem;
+  background: rgba(255, 255, 255, .06); border: 1px solid rgba(127, 178, 255, .18);
+  border-radius: 14px; padding: .8rem 1rem; margin-bottom: .5rem;
+  color: #fff; font-weight: 600; text-decoration: none;
+}
+.tree-item:hover, .tree-item:focus-visible { color: #fff; background: rgba(255, 255, 255, .1); }
+.tree-item__ico { flex: 0 0 22px; width: 22px; height: 22px; color: var(--fco-azul-claro); }
+.tree-item__ico svg { width: 100%; height: 100%; }
+.tree-flecha { margin-left: auto; color: var(--fco-azul-claro); font-size: 1.3rem; line-height: 1; }
+.tree-pie { text-align: center; margin-top: 2rem; display: grid; gap: .35rem; }
+.tree-pie a { color: #fff; font-weight: 700; text-decoration: none; }
+.tree-pie small { color: var(--fco-azul-claro); }
+.tree-pie small a { font-weight: 600; text-decoration: underline; }
