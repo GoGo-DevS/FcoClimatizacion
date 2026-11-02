@@ -100,7 +100,12 @@
     </div>
   </section>
 
-  {% comment %} CALCULADORA: se conserva, es lo mejor que tenía el sitio. {% endcomment %}
+  {% comment %}
+    CALCULADORA: se conserva, es lo mejor que tenía el sitio.
+    Lo que la hace funcionar es static/js/capacidad.js (bloque scripts, al
+    final). Entre el 16-09 y el 02-11-2026 el boton no hacia nada: el script
+    vivia aqui dentro y se perdio al reescribir la portada.
+  {% endcomment %}
   <section class="mt-5 reveal franja-clara-seccion" id="capacidad">
     <div class="row g-4">
       <div class="col-lg-7">
@@ -216,3 +221,7 @@
   {% include "core/_cta.html" %}
 </div>
 {% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/capacidad.js' %}" defer></script>
+{% endblock scripts %}

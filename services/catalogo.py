@@ -112,13 +112,19 @@ SERVICIOS = [
         "slug": "mantencion-aire-acondicionado",
         "icono": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5c3 3.7 5 6.3 5 8.8a5 5 0 0 1-10 0c0-2.5 2-5.1 5-8.8Z"/><path d="M9.5 12.8a2.6 2.6 0 0 0 2.6 2.6"/></svg>',
         "nombre": "Mantención de aire acondicionado",
-        "titulo_seo": "Mantención de aire acondicionado en Pudahuel | FCO",
+        # 02-11-2026: "limpieza" va en el titulo y "a domicilio" en el H1, que
+        # son las palabras con que se busca este servicio. En el autocompletado
+        # de Google (Chile), "limpieza aire acondicionado" es una busqueda
+        # propia (split, precio, a domicilio), y "mantencion aire acondicionado
+        # a domicilio" sale en 4 semillas distintas. La comuna se queda: el
+        # titulo sigue nombrando Pudahuel (core/tests_cobertura).
+        "titulo_seo": "Mantención y limpieza de aire acondicionado en Pudahuel",
         "meta": (
-            "Mantención y limpieza de aire acondicionado en Ciudad de los Valles y "
-            "Pudahuel: filtros, unidad interior y exterior, drenaje y prueba. Con "
+            "Mantención y limpieza de aire acondicionado split a domicilio en Ciudad "
+            "de los Valles y Pudahuel: filtros, unidades, drenaje y prueba. Con "
             "factura."
         ),
-        "encabezado": "Mantención y limpieza de aire acondicionado",
+        "encabezado": "Mantención y limpieza de aire acondicionado a domicilio",
         "bajada": (
             "Un equipo sin mantención enfría menos, gasta más y termina fallando "
             "justo cuando más lo necesitas. La mantención es lo que lo evita."
@@ -158,8 +164,8 @@ SERVICIOS = [
         "titulo_seo": "Reparación de aire acondicionado en Pudahuel | FCO",
         "meta": (
             "Reparación de aire acondicionado en Ciudad de los Valles y Pudahuel: "
-            "diagnóstico en terreno, gas, drenaje y sistema eléctrico. Factura y "
-            "garantía."
+            "diagnóstico en terreno, carga de gas, drenaje y sistema eléctrico. "
+            "Factura y garantía."
         ),
         "encabezado": "Reparación de aire acondicionado en Ciudad de los Valles y Pudahuel",
         "bajada": (
@@ -190,6 +196,14 @@ SERVICIOS = [
              "Depende de la falla, de la antigüedad y del costo de la reparación. Con "
              "el diagnóstico en la mano te decimos qué conviene, aunque la respuesta "
              "sea no repararlo."),
+            # 02-11-2026: "recarga gas aire acondicionado casa" es la segunda
+            # sugerencia de Google para esa busqueda. El sitio ya decia que la
+            # reparacion incluye "carga de gas cuando corresponde"; esto lo
+            # responde con esas mismas palabras, sin precio ni plazo.
+            ("¿Hacen recarga de gas?",
+             "Sí, cuando el diagnóstico muestra que al equipo le falta gas. Un split "
+             "no gasta gas con el uso: si le falta, es porque tiene una fuga, y "
+             "recargarlo sin repararla solo hace que el gas se vuelva a perder."),
         ],
         "secciones": [
             {
@@ -210,6 +224,43 @@ SERVICIOS = [
                     "y, si aparece, el código de error que muestra la pantalla o el "
                     "control. Con eso llegamos a la visita sabiendo qué buscar."
                 ),
+            },
+            {
+                # 02-11-2026: los sintomas con que la gente busca antes de
+                # llamar a un tecnico. Del autocompletado de Google (Chile):
+                # "aire acondicionado no enfria" (causas, como antes, pero tiene
+                # gas), "aire acondicionado gotea" (agua exterior es la primera
+                # sugerencia, unidad interior, dentro de casa) y "recarga gas
+                # aire acondicionado casa". Todo es general del oficio; lo unico
+                # de la empresa es lo que el sitio ya decia (diagnostico antes
+                # de cotizar, carga de gas cuando corresponde).
+                "titulo": "No enfría, gotea o le falta gas: qué puede ser",
+                "parrafos": [
+                    "Estas son las fallas por las que más se pide una reparación, y lo "
+                    "que suele haber detrás de cada una:",
+                ],
+                "puntos": [
+                    "No enfría como antes: lo más común es un filtro sucio o la unidad "
+                    "exterior tapada de polvo u hojas, y eso se resuelve con una "
+                    "mantención. Si sigue igual, puede faltar gas o haber una falla "
+                    "eléctrica, y ahí hace falta un diagnóstico.",
+                    "Nunca enfrió bien: puede que el equipo sea chico para el ambiente. "
+                    "La calculadora de la portada da una referencia de la capacidad que "
+                    "corresponde.",
+                    "Gotea dentro de la casa: casi siempre es el drenaje tapado o los "
+                    "filtros sucios. No es normal, y conviene revisarlo antes de que el "
+                    "agua manche el muro.",
+                    "Gotea afuera: que caiga agua por la manguera del drenaje mientras "
+                    "el equipo enfría es normal, es la humedad que le saca al ambiente. "
+                    "En modo calor también es normal que gotee la unidad exterior.",
+                    "Le falta gas: el equipo trabaja con un circuito cerrado y el gas no "
+                    "se gasta con el uso. Si falta, hay una fuga, y por eso la carga de "
+                    "gas va después del diagnóstico, no en vez de él.",
+                ],
+                "enlaces": [
+                    ("Ver qué incluye la mantención", "/servicios/mantencion-aire-acondicionado/"),
+                    ("Calcular la capacidad que necesitas", "/#capacidad"),
+                ],
             },
         ],
         "relacionados": ["mantencion-aire-acondicionado", "venta-equipos-climatizacion"],

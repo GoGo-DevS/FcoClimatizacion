@@ -42,6 +42,11 @@
         </ul>
         {% endif %}
         {% if sec.cierre %}<p>{{ sec.cierre }}</p>{% endif %}
+        {% if sec.enlaces %}
+        <p class="d-flex flex-wrap gap-3 mt-2 mb-0">
+          {% for texto, url in sec.enlaces %}<a class="enlace-flecha" href="{{ url }}">{{ texto }}</a>{% endfor %}
+        </p>
+        {% endif %}
       {% endfor %}
 
       {% comment %}
