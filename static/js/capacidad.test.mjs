@@ -68,6 +68,18 @@ for (const [m2, uso, esperado] of casos) {
   revisar(`${m2} m2 ${uso}`, got === esperado, got || '(vacio)');
 }
 
+// 03-11-2026: casos extra desde un JSON [[m2, uso, btu], ...]. Los manda
+// core/tests_btu.py con CADA celda de la tabla de /cuantos-btu-necesito/,
+// para que la tabla publicada y la calculadora no puedan decir cosas distintas.
+if (process.argv[3]) {
+  const extra = JSON.parse(fs.readFileSync(process.argv[3], 'utf8'));
+  for (const [m2, uso, btu] of extra) {
+    const esperado = btu.toLocaleString('es-CL') + ' BTU (estimado)';
+    const got = calcular(m2, uso);
+    revisar(`tabla: ${m2} m2 ${uso}`, got === esperado, `${got} en vez de ${esperado}`);
+  }
+}
+
 calcular(18, 'normal');
 const href = els.btnCotizarConBtu.getAttribute('href');
 revisar('el boton de cotizar queda habilitado', !els.btnCotizarConBtu.classList.contains('disabled'), 'sigue disabled');

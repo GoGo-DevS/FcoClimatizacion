@@ -14,6 +14,8 @@ urlpatterns = [
     path("links/", core_views.links, name="links"),
     # Una pagina por sector, con la keyword en la URL (core/zonas.py).
     path("aire-acondicionado-<slug:slug>/", core_views.zona, name="zona"),
+    # La guia de capacidad (core/btu.py): "cuantos btu necesito".
+    path("cuantos-btu-necesito/", core_views.cuantos_btu, name="btu"),
     path("", include("leads.urls")),
     path("", include("projects.urls")),
     path("", include("services.urls")),

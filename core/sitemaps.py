@@ -14,7 +14,8 @@ class PaginasFijas(Sitemap):
     protocol = "https"
 
     def items(self):
-        return ["home", "services:index", "projects:list"]
+        # "btu": la guia /cuantos-btu-necesito/ (03-11-2026).
+        return ["home", "services:index", "projects:list", "btu"]
 
     def location(self, item):
         return reverse(item) if ":" in item else reverse(item)

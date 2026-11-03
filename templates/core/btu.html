@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% load static seo_extras %}
+
+{% comment %}
+  /cuantos-btu-necesito/ (core/btu.py). Las cifras de las tablas, del resumen
+  y de las preguntas salen de la formula de la calculadora: aca no se escribe
+  ningun numero a mano.
+{% endcomment %}
+{% block content %}
+<div class="container">
+  <nav aria-label="Ruta" class="migas py-3">
+    <a href="/">Inicio</a> <span aria-hidden="true">›</span>
+    <span>¿Cuántos BTU necesito?</span>
+  </nav>
+
+  <div class="row g-4 g-lg-5 align-items-start">
+    <div class="col-lg-7">
+      <span class="kicker">Guía de capacidad</span>
+      <h1 class="h2 fw-bold mb-2">¿Cuántos BTU necesito para mi aire acondicionado?</h1>
+      <p class="lead-corto">
+        Como referencia, un aire acondicionado split necesita unos 600 BTU por metro
+        cuadrado: {{ resumen_texto }}. Si el ambiente recibe sol directo o se juntan
+        muchas personas, puede tocar el tamaño siguiente.
+      </p>
+      <p class="text-secondary">
+        Abajo están la tabla por metros cuadrados, la de cada equipo y una
+        calculadora. Son una referencia para partir: la capacidad final se confirma
+        en la visita, mirando el lugar.
+      </p>
+    </div>
+    <div class="col-lg-5">
+      {% include "core/_calculadora.html" with titulo="Calcula los BTU de tu pieza" %}
+    </div>
+  </div>
+
+  <section class="mt-5" aria-labelledby="tabla-m2">
+    <h2 id="tabla-m2" class="h4 fw-bold mb-2">Tabla de BTU por metro cuadrado</h2>
+    <p>Se redondea al tamaño comercial siguiente: {% for t in tamanos %}{{ t|miles }}{% if not forloop.last %}, {% endif %}{% endfor %} BTU.</p>
+    <div class="table-responsive">
+      <table class="table table-sm align-middle tabla-btu">
+        <thead>
+          <tr>
+            <th scope="col">Superficie</th>
+            <th scope="col">Ambiente normal</th>
+            <th scope="col">Con sol directo</th>
+            <th scope="col">Muchas personas o equipos</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for fila in tabla_m2 %}
+          <tr>
+            <th scope="row">{{ fila.m2 }} m²{% if fila.etiqueta %} <span class="text-secondary fw-normal small">({{ fila.etiqueta }})</span>{% endif %}</th>
+            <td>{{ fila.btu.normal|miles }} BTU</td>
+            <td>{{ fila.btu.caluroso|miles }} BTU</td>
+            <td>{{ fila.btu.muchas_personas|miles }} BTU</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <p class="small text-secondary mb-0">
+      Para ambientes de más de 60 m² o para climatizar varias piezas, el cálculo se
+      hace en la visita.
+    </p>
+  </section>
+
+  <section class="mt-5" aria-labelledby="tabla-equipo">
+    <h2 id="tabla-equipo" class="h4 fw-bold mb-2">¿Para cuántos metros cuadrados sirve cada equipo?</h2>
+    <p>La misma fórmula leída al revés: los metros cuadrados que cubre cada tamaño de equipo.</p>
+    <div class="table-responsive">
+      <table class="table table-sm align-middle tabla-btu">
+        <thead>
+          <tr>
+            <th scope="col">Equipo</th>
+            <th scope="col">Ambiente normal</th>
+            <th scope="col">Con sol directo</th>
+            <th scope="col">Muchas personas o equipos</th>
+            <th scope="col">Frigorías aprox.</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for fila in tabla_equipo %}
+          <tr>
+            <th scope="row">{{ fila.btu|miles }} BTU</th>
+            <td>hasta {{ fila.m2.normal }} m²</td>
+            <td>hasta {{ fila.m2.caluroso }} m²</td>
+            <td>hasta {{ fila.m2.muchas_personas }} m²</td>
+            <td>{{ fila.frigorias }} <span class="text-secondary small">({{ fila.kw }} kW)</span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="row mt-4">
+    <div class="col-lg-8">
+      <h2 class="h4 fw-bold mt-4 mb-2">Qué puede cambiar el cálculo</h2>
+      <p>Los 600 BTU por metro cuadrado suponen un techo de altura normal. Estas cosas suben la capacidad que hace falta:</p>
+      <ul class="lista-punto">
+        <li>Sol directo: una pieza con ventanas al norte o al poniente se calienta más en la tarde. La calculadora le suma un 15&nbsp;%.</li>
+        <li>Muchas personas o equipos encendidos, como computadores o una cocina cerca: todos suman calor. La calculadora le suma un 20&nbsp;%.</li>
+        <li>Un techo más alto de lo normal: hay más aire que enfriar.</li>
+        <li>Poca aislación, ventanales grandes sin cortina o un último piso bajo el techo: entra más calor del que el equipo tiene que sacar.</li>
+      </ul>
+      <p class="mt-3">
+        Si el equipo queda chico, funciona al máximo todo el día y la pieza igual no
+        llega a la temperatura que quieres. Si queda muy grande, se enciende y se
+        apaga a cada rato. Por eso conviene tener la cifra antes de comprar.
+      </p>
+
+      <h2 class="h4 fw-bold mt-4 mb-2">Si ya sabes cuántos BTU necesitas</h2>
+      <p>Con la capacidad clara, lo que sigue es el equipo y su instalación:</p>
+    </div>
+  </div>
+  <div class="row g-3">
+    {% for s in siguientes %}
+      <div class="col-12 col-md-6">
+        <a class="servicio-card servicio-card--enlace d-block h-100" href="{% url 'services:detail' s.slug %}">
+          <span class="servicio-icono" aria-hidden="true">{{ s.icono|safe }}</span>
+          <h3 class="h5 fw-bold mb-2">{{ s.nombre }}</h3>
+          <p class="text-secondary mb-2">{{ s.bajada }}</p>
+          <span class="enlace-flecha">Ver detalle</span>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% comment %} FAQ visible: es la misma que va marcada como FAQPage. {% endcomment %}
+  <section class="mt-5">
+    <h2 class="h4 fw-bold mb-3">Preguntas frecuentes sobre BTU</h2>
+    <div class="faq-lista">
+      {% for pregunta, respuesta in preguntas %}
+        <details class="faq-item"{% if forloop.first %} open{% endif %}>
+          <summary>{{ pregunta }}</summary>
+          <p class="mb-0">{{ respuesta }}</p>
+        </details>
+      {% endfor %}
+    </div>
+  </section>
+
+  {% include "core/_cta.html" %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/capacidad.js' %}" defer></script>
+{% endblock scripts %}

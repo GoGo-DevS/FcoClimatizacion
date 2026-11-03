@@ -311,8 +311,14 @@ SERVICIOS = [
                     "equipo chico para el ambiente trabaja siempre al máximo y no "
                     "alcanza a enfriar; uno demasiado grande se prende y se apaga a "
                     "cada rato. Por eso se calcula antes de comprar, no después.",
-                    "En la portada hay una calculadora que da una referencia inicial, "
-                    "y la capacidad final la confirmamos contigo según el lugar.",
+                    # 03-11-2026: la tabla por m2 y la calculadora viven en la
+                    # guia /cuantos-btu-necesito/ (core/btu.py).
+                    "En la guía de BTU hay una tabla por metros cuadrados y una "
+                    "calculadora que dan una referencia inicial, y la capacidad final "
+                    "la confirmamos contigo según el lugar.",
+                ],
+                "enlaces": [
+                    ("Ver la tabla de BTU por metro cuadrado", "/cuantos-btu-necesito/"),
                 ],
             },
         ],

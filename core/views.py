@@ -1,7 +1,7 @@
 from django.http import Http404, HttpResponse
 from django.shortcuts import render
 
-from core import seo, zonas
+from core import btu, seo, zonas
 from projects.models import Project
 from projects.utils import is_segmented_title
 from services import catalogo
@@ -90,6 +90,31 @@ def zona(request, slug):
             seo.preguntas_schema(datos["preguntas"]),
             # La miga es el H1 de la pagina a la que lleva.
             seo.migas_schema([("Inicio", "/"), (datos["h1"], ruta)]),
+        ],
+    })
+
+
+def cuantos_btu(request):
+    """La guia de capacidad: "¿Cuántos BTU necesito?" (core/btu.py)."""
+    ruta = "/cuantos-btu-necesito/"
+    preguntas = btu.preguntas()
+    return render(request, "core/btu.html", {
+        "resumen_texto": btu.resumen_texto(),
+        "tamanos": btu.TAMANOS,
+        "tabla_m2": btu.tabla_por_m2(),
+        "tabla_equipo": btu.tabla_por_equipo(),
+        "preguntas": preguntas,
+        # Lo que sigue despues de saber la capacidad: guia -> servicios.
+        "siguientes": [catalogo.servicio("instalacion-aire-acondicionado"),
+                       catalogo.servicio("venta-equipos-climatizacion")],
+        # Busqueda nacional e informativa: sin comuna en el titulo.
+        "meta_title": "¿Cuántos BTU necesito? Tabla por metros cuadrados | FCO",
+        "meta_description": btu.meta(),
+        "canonical": f"{seo.DOMINIO}{ruta}",
+        "schema_extra": [
+            # El FAQ marcado es EL MISMO que se ve en la pagina.
+            seo.preguntas_schema(preguntas),
+            seo.migas_schema([("Inicio", "/"), ("¿Cuántos BTU necesito?", ruta)]),
         ],
     })
 

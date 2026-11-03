@@ -17,3 +17,10 @@ _ESCAPES = {ord("<"): "\\u003c", ord(">"): "\\u003e", ord("&"): "\\u0026"}
 @register.filter
 def como_json(valor):
     return mark_safe(json.dumps(valor, ensure_ascii=False).translate(_ESCAPES))
+
+
+@register.filter
+def miles(valor):
+    """12000 -> "12.000", como se escriben los BTU en Chile (core/btu.py)."""
+    from core.btu import miles as _miles
+    return _miles(int(valor))

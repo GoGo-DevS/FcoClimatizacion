@@ -109,47 +109,7 @@
   <section class="mt-5 reveal franja-clara-seccion" id="capacidad">
     <div class="row g-4">
       <div class="col-lg-7">
-        <div class="card border-0 shadow-sm rounded-4 h-100">
-          <div class="card-body p-4 p-md-5">
-            <h2 class="h4 fw-bold mb-1">¿Qué capacidad necesito?</h2>
-            <p class="text-muted mb-4">Estimación rápida según m². Para el cálculo exacto hacemos visita técnica.</p>
-
-            <div class="row g-3 align-items-end">
-              <div class="col-md-4">
-                <label class="form-label" for="m2">Metros²</label>
-                <input id="m2" type="number" min="1" class="form-control form-control-lg" placeholder="Ej: 18">
-              </div>
-              <div class="col-md-4">
-                <label class="form-label" for="uso">Uso</label>
-                <select id="uso" class="form-select form-select-lg">
-                  <option value="normal" selected>Normal</option>
-                  <option value="caluroso">Muy caluroso / sol directo</option>
-                  <option value="muchas_personas">Muchas personas / equipos</option>
-                </select>
-              </div>
-              <div class="col-md-4">
-                <button id="btnCalc" class="btn btn-primary btn-lg w-100 btn-press" type="button">Calcular</button>
-              </div>
-            </div>
-
-            <div class="mt-4 p-3 rounded-3 bg-light border">
-              <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
-                <div>
-                  <div class="text-muted small">Recomendación</div>
-                  <div class="h4 fw-bold mb-0" id="resultado">—</div>
-                </div>
-                <a id="btnCotizarConBtu" class="btn btn-success btn-lg btn-press disabled" target="_blank" rel="noopener"
-                   href="https://wa.me/{{ WHATSAPP_PHONE_CLEAN }}?text=Hola,%20quiero%20cotizar%20aire%20acondicionado.">
-                  Cotizar con estos datos
-                </a>
-              </div>
-              <div class="text-muted small mt-2">
-                * Referencia inicial. La altura, la aislación, la orientación y la distancia
-                de cañerías pueden cambiar la recomendación final.
-              </div>
-            </div>
-          </div>
-        </div>
+        {% include "core/_calculadora.html" with enlace_tabla=True %}
       </div>
 
       <div class="col-lg-5">

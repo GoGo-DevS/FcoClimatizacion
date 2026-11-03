@@ -1334,3 +1334,7 @@ body:has(.tree) main { padding: 0 !important; }
 .tree-pie a { color: #fff; font-weight: 700; text-decoration: none; }
 .tree-pie small { color: var(--fco-azul-claro); }
 .tree-pie small a { font-weight: 600; text-decoration: underline; }
+
+/* Guia de BTU (03-11-2026): las cifras no se parten en dos lineas; en el
+   celular la tabla se desplaza dentro de .table-responsive. */
+.tabla-btu th, .tabla-btu td { white-space: nowrap; }
