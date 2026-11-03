@@ -23,7 +23,7 @@
         <a class="btn btn-outline-primary btn-press" href="tel:{{ WHATSAPP_PHONE }}">Llamar</a>
       </div>
 
-      <h2 class="h5 fw-bold mt-4 mb-2">Qué incluye</h2>
+      <h2 class="h5 fw-bold mt-4 mb-2">{{ s.titulo_incluye|default:"Qué incluye" }}</h2>
       <ul class="lista-check">
         {% for item in s.incluye %}<li>{{ item }}</li>{% endfor %}
       </ul>
@@ -41,7 +41,7 @@
           {% for item in sec.puntos %}<li>{{ item }}</li>{% endfor %}
         </ul>
         {% endif %}
-        {% if sec.cierre %}<p>{{ sec.cierre }}</p>{% endif %}
+        {% if sec.cierre %}<p class="mt-3">{{ sec.cierre }}</p>{% endif %}
         {% if sec.enlaces %}
         <p class="d-flex flex-wrap gap-3 mt-2 mb-0">
           {% for texto, url in sec.enlaces %}<a class="enlace-flecha" href="{{ url }}">{{ texto }}</a>{% endfor %}

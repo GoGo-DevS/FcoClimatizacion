@@ -31,13 +31,21 @@ SERVICIOS = [
         "slug": "instalacion-aire-acondicionado",
         "icono": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="7" rx="1.6"/><path d="M6.5 9h11M8 15.5c0 1.2-1 1.5-1 2.8M12 15.5c0 1.5-1 1.8-1 3.2M16 15.5c0 1.2-1 1.5-1 2.8"/></svg>',
         "nombre": "Instalación de aire acondicionado",
-        "titulo_seo": "Instalación de aire acondicionado en Pudahuel | FCO",
+        # 03-11-2026: 12 impresiones en posicion 6,5 y 1 clic (GSC 04-10 a
+        # 31-10): es la rapida de la tanda. "split" es la variante con mas
+        # sugerencias ("instalacion aire acondicionado split" + precio, paso a
+        # paso, inverter) y "que incluye instalacion basica aire acondicionado"
+        # es una busqueda propia: va en el H2 de lo que incluye y en el FAQ.
+        # Maipu NO va aca: tiene su pagina y competirian entre si. Lampa salio
+        # de la meta (no esta confirmada).
+        "titulo_seo": "Instalación de aire acondicionado split en Pudahuel | FCO",
         "meta": (
-            "Instalación de aire acondicionado split en Ciudad de los Valles, "
-            "Pudahuel, Lampa y Maipú. Visita técnica, vacío del circuito, prueba, "
+            "Instalación de aire acondicionado split en casa o departamento, en "
+            "Pudahuel y Ciudad de los Valles: qué incluye, cuántos BTU necesitas, "
             "factura y garantía."
         ),
-        "encabezado": "Instalación de aire acondicionado en Ciudad de los Valles y Pudahuel",
+        "encabezado": "Instalación de aire acondicionado split en Ciudad de los Valles y Pudahuel",
+        "titulo_incluye": "Qué incluye la instalación básica",
         "bajada": (
             "Instalamos equipos split en casas, departamentos, oficinas y locales. "
             "Dejamos el equipo funcionando y probado, no solo colgado en la pared."
@@ -56,7 +64,7 @@ SERVICIOS = [
             "Equipos recién comprados que llegaron sin instalación",
         ],
         "preguntas": [
-            ("¿Qué incluye una instalación estándar?",
+            ("¿Qué incluye la instalación básica de un aire acondicionado?",
              "Montaje de la unidad interior y exterior, conexión, canalización, vacío "
              "del circuito, prueba de funcionamiento y recomendaciones de uso."),
             ("¿Necesito comprar yo el equipo?",
@@ -64,8 +72,9 @@ SERVICIOS = [
              "equipo y la instalación juntos."),
             ("¿Cuánta capacidad necesito?",
              "Depende de los metros cuadrados del ambiente, la altura, la orientación y "
-             "la aislación. En la portada hay una calculadora que da una referencia "
-             "inicial, y el cálculo exacto lo hacemos en la visita técnica."),
+             "la aislación. En la guía de BTU hay una tabla por metros cuadrados y una "
+             "calculadora que dan una referencia inicial, y el cálculo exacto lo "
+             "hacemos en la visita técnica."),
             ("¿Hacen la instalación en altura o en fachada?",
              "Sí, siempre que existan las condiciones de seguridad para trabajar. Se "
              "revisa en la visita antes de cotizar."),
@@ -77,13 +86,23 @@ SERVICIOS = [
         ],
         "secciones": [
             {
-                "titulo": "Lo que se revisa en la visita, antes de instalar",
+                # 03-11-2026: lo primero que se decide antes de instalar es el
+                # tamano del equipo. Las cifras salen de core/btu.py, la misma
+                # formula de la calculadora (ver _seccion_btu, al final).
+                "titulo": "¿De cuántos BTU es el equipo que vas a instalar?",
+                "btu": True,
+            },
+            {
+                "titulo": "Lo que se revisa en la visita, en casa o en departamento",
                 "parrafos": [
                     "Una instalación se decide antes de sacar el equipo de la caja. "
                     "En la visita se miran estos puntos, porque son los que después "
                     "definen si el equipo enfría bien y si se puede mantener:",
                 ],
                 "puntos": [
+                    "En un departamento, dónde permite el reglamento del edificio "
+                    "poner la unidad exterior: conviene preguntarlo a la "
+                    "administración antes de la visita",
                     "Dónde va la unidad interior, para que reparta el aire en el "
                     "ambiente sin darte directo",
                     "Dónde va la unidad exterior: con ventilación y en un lugar donde "
@@ -351,9 +370,34 @@ def _pregunta_zona(servicio):
     )
 
 
+def _seccion_btu(seccion):
+    """La seccion "¿De cuántos BTU...?" con las cifras de core/btu.py.
+
+    No se escriben a mano: si la formula de la calculadora cambia, esta
+    seccion, la guia /cuantos-btu-necesito/ y la calculadora cambian juntas.
+    """
+    from core import btu
+    seccion["parrafos"] = [
+        "Antes de instalar conviene tener claro el tamaño del equipo. Como "
+        "referencia, un split necesita unos 600 BTU por metro cuadrado:",
+    ]
+    seccion["puntos"] = [f"Hasta {m2} m²: {btu.miles(e)} BTU" for e, m2 in btu.resumen()]
+    seccion["cierre"] = (
+        "Si la pieza recibe sol directo o se juntan muchas personas, puede tocar el "
+        "tamaño siguiente. Si ya compraste el equipo, revisa que su capacidad calce "
+        "con la pieza antes de la visita."
+    )
+    seccion["enlaces"] = [
+        ("Ver la tabla completa y la calculadora", "/cuantos-btu-necesito/"),
+    ]
+
+
 for _s in SERVICIOS:
     _s["preguntas"] = [_pregunta_zona(_s)] + _s["preguntas"]
     _s.setdefault("secciones", [])
+    for _sec in _s["secciones"]:
+        if _sec.get("btu"):
+            _seccion_btu(_sec)
 
 _POR_SLUG = {s["slug"]: s for s in SERVICIOS}
 

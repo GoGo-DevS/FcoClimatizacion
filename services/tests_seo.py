@@ -105,3 +105,61 @@ class TodosLosServiciosTests(TestCase):
             titulo, meta, _ = partes(html)
             self.assertLessEqual(len(titulo), 60, titulo)
             self.assertLessEqual(len(meta), 160, meta)
+
+
+INSTALACION = "/servicios/instalacion-aire-acondicionado/"
+
+
+class InstalacionTests(TestCase):
+    """03-11-2026: la rapida de la tanda (12 impresiones, posicion 6,5, 1 clic
+    en GSC 04-10 a 31-10). "split" va en titulo, H1 y meta; "que incluye
+    instalacion basica aire acondicionado" en el H2 y en el FAQ; y una seccion
+    de BTU con las cifras de la calculadora, enlazada a la guia."""
+
+    def setUp(self):
+        r = self.client.get(INSTALACION)
+        self.assertEqual(r.status_code, 200)
+        self.html = r.content.decode()
+        self.titulo, self.meta, self.h1 = partes(self.html)
+
+    def test_titulo_h1_y_meta_dicen_split(self):
+        self.assertIn("Instalación de aire acondicionado split", self.titulo)
+        self.assertIn("Pudahuel", self.titulo)
+        self.assertLessEqual(len(self.titulo), 60, self.titulo)
+        self.assertIn("split", self.h1)
+        self.assertIn("split", self.meta)
+        self.assertIn("qué incluye", self.meta)
+        self.assertLessEqual(len(self.meta), 160, self.meta)
+
+    def test_la_meta_no_nombra_comunas_sin_confirmar_ni_maipu(self):
+        """Lampa no esta confirmada; Maipu tiene su pagina y competiria."""
+        for comuna in ("Lampa", "Quilicura", "Maipú"):
+            self.assertNotIn(comuna, self.meta, comuna)
+            self.assertNotIn(comuna, self.titulo, comuna)
+
+    def test_el_h2_y_el_faq_dicen_que_incluye_la_instalacion_basica(self):
+        self.assertIn(">Qué incluye la instalación básica</h2>", self.html)
+        visibles = [html_lib.unescape(p) for p in re.findall(r"<summary>(.*?)</summary>", self.html)]
+        self.assertIn("¿Qué incluye la instalación básica de un aire acondicionado?", visibles)
+        faq = [json.loads(b) for b in BLOQUE_LD.findall(self.html)]
+        faq = next(b for b in faq if b.get("@type") == "FAQPage")
+        self.assertEqual(sorted(q["name"] for q in faq["mainEntity"]), sorted(visibles))
+
+    def test_los_otros_servicios_conservan_su_que_incluye(self):
+        html = self.client.get(MANTENCION).content.decode()
+        self.assertIn(">Qué incluye</h2>", html)
+
+    def test_la_seccion_de_btu_dice_lo_que_da_la_formula_y_enlaza_a_la_guia(self):
+        from core import btu
+        self.assertIn("¿De cuántos BTU es el equipo que vas a instalar?", self.html)
+        seccion = self.html.split("¿De cuántos BTU es el equipo que vas a instalar?", 1)[1]
+        seccion = seccion.split("<h2", 1)[0]
+        for equipo, m2 in btu.resumen():
+            self.assertIn(f"Hasta {m2} m²: {btu.miles(equipo)} BTU", seccion)
+        self.assertIn('href="/cuantos-btu-necesito/"', seccion)
+        self.assertEqual(self.client.get("/cuantos-btu-necesito/").status_code, 200)
+        self.assertNotRegex(seccion, r"\$\s?\d")
+
+    def test_responde_casa_o_departamento(self):
+        self.assertIn("Lo que se revisa en la visita, en casa o en departamento", self.html)
+        self.assertIn("reglamento del edificio", self.html)
