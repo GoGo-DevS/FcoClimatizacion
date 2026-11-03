@@ -24,7 +24,7 @@ def servicios_index(request):
         "meta_title": "Servicios de climatización | FCO Climatización",
         "meta_description": (
             "Instalación, mantención, reparación y venta de aire acondicionado en "
-            "Ciudad de los Valles, Pudahuel, Lampa y Maipú. Factura y garantía."),
+            "Ciudad de los Valles, Pudahuel y Maipú. Factura y garantía."),
         "canonical": f"{seo.DOMINIO}/servicios/",
         "schema_extra": [seo.migas_schema([("Inicio", "/"), ("Servicios", "/servicios/")])],
     })

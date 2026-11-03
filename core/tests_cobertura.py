@@ -34,21 +34,62 @@ class ZonaTests(TestCase):
 
     def test_el_area_servida_son_ciudades_con_nombre(self):
         """Un AdministrativeArea generico no le sirve a Google para cruzarlo
-        con la comuna de quien busca. Una lista de City si."""
+        con la comuna de quien busca. Una lista de City si.
+
+        03-11-2026: solo las comunas CONFIRMADAS una por una (su base y las que
+        tienen pagina). Antes eran las ocho de COMUNAS."""
         area = seo.area_servida()
         ciudades = [a for a in area if a["@type"] == "City"]
-        self.assertEqual(len(ciudades), len(seo.COMUNAS))
+        self.assertEqual([c["name"] for c in ciudades], seo.comunas_confirmadas())
         for ciudad in ciudades:
             self.assertIn(ciudad["name"], seo.COMUNAS)
             self.assertEqual(ciudad["addressCountry"], "CL")
         # 16-10-2026: Francisco trabaja en todo Chile; las comunas van primero.
         self.assertEqual(area[-1], {"@type": "Country", "name": "Chile"})
 
-    def test_el_json_ld_del_negocio_publica_las_comunas(self):
+    def test_el_json_ld_del_negocio_publica_solo_comunas_confirmadas(self):
+        """Pudahuel (su base) y Maipu (confirmada el 19-10) si; Lampa,
+        Quilicura y Colina se publicaron el 04-10 esperando una confirmacion
+        que no llego, y no se le declaran a Google."""
         datos = seo.datos_del_negocio()
         nombres = [c["name"] for c in datos["areaServed"]]
         self.assertIn("Pudahuel", nombres)
-        self.assertIn("Lampa", nombres)
+        self.assertIn("Maipú", nombres)
+        for sin_confirmar in ("Lampa", "Quilicura", "Colina", "Renca"):
+            self.assertNotIn(sin_confirmar, nombres, sin_confirmar)
+
+    def test_una_comuna_con_pagina_entra_sola_al_area_servida(self):
+        """Confirmar Quilicura = agregar su pagina en core/zonas.py. El schema
+        no se toca a mano."""
+        from unittest import mock
+        from core import zonas
+        quilicura = {"slug": "quilicura", "nombre": "Quilicura", "comuna": "Quilicura",
+                     "es_comuna": True}
+        with mock.patch.object(zonas, "ZONAS", zonas.ZONAS + [quilicura]):
+            self.assertIn("Quilicura", seo.comunas_confirmadas())
+            nombres = [c["name"] for c in seo.area_servida()]
+        self.assertIn("Quilicura", nombres)
+
+    def test_las_descripciones_nombran_solo_comunas_confirmadas(self):
+        """La meta de la portada y la de /servicios/ son lo que Google muestra
+        bajo el titulo: no pueden ofrecer comunas sin confirmar."""
+        import re
+        for ruta in ("/", "/servicios/"):
+            html = self.client.get(ruta).content.decode()
+            meta = re.search(r'<meta name="description" content="([^"]*)"', html).group(1)
+            self.assertIn("Maipú", meta, ruta)
+            for sin_confirmar in ("Lampa", "Quilicura"):
+                self.assertNotIn(sin_confirmar, meta, ruta)
+
+    def test_el_negocio_tiene_imagen_y_logo_que_existen(self):
+        """URLs absolutas a archivos que estan en el repo, no a un 404."""
+        from pathlib import Path
+        from django.conf import settings
+        datos = seo.datos_del_negocio()
+        for campo, archivo in (("image", "og-fco.jpg"), ("logo", "icon-512.png")):
+            self.assertTrue(datos[campo].startswith(seo.DOMINIO + "/static/"), datos[campo])
+            self.assertIn(archivo, datos[campo])
+            self.assertTrue(Path(settings.BASE_DIR, "static", "img", archivo).exists(), archivo)
 
 
 class PantallasTests(TestCase):

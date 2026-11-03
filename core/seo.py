@@ -18,9 +18,11 @@ from django.conf import settings
 
 NOMBRE = "FCO Climatización"
 DOMINIO = "https://fcoclimatizacion.cl"
+# 03-11-2026: nombraba Lampa y Quilicura, que Francisco nunca confirmo una por
+# una. Ahora nombra solo las confirmadas: su base y Maipu (19-10).
 DESCRIPCION_CORTA = (
     "Instalación, mantención y reparación de aire acondicionado en Ciudad de los "
-    "Valles, Pudahuel, Lampa, Quilicura y alrededores. Con factura y garantía."
+    "Valles, Pudahuel, Maipú y alrededores. Con factura y garantía."
 )
 
 # LAS COMUNAS, que es lo que de verdad busca la gente.
@@ -67,8 +69,27 @@ def whatsapp_url(texto="Hola, quiero cotizar aire acondicionado."):
     return f"https://wa.me/{numero}?text={quote(texto)}"
 
 
+def comunas_confirmadas():
+    """Las comunas que Francisco confirmo UNA POR UNA: su base y las que tienen
+    pagina propia en core/zonas.py (una comuna solo tiene pagina si la confirmo).
+
+    03-11-2026: el areaServed declaraba como `City` las ocho comunas de
+    COMUNAS, que se publicaron el 04-10 a la espera de su confirmacion y que
+    nunca se confirmaron una por una (el 16-10 dijo "todo Chile", que va como
+    `Country`). Declararle a Google comunas que nadie confirmo es lo mismo que
+    publicarlas en un titulo. Cuando confirme Quilicura y tenga su pagina,
+    entra aca sola.
+    """
+    from core import zonas
+    confirmadas = [COMUNAS[0]]  # Pudahuel: la comuna de su base
+    for z in zonas.ZONAS:
+        if z.get("es_comuna") and z["nombre"] not in confirmadas:
+            confirmadas.append(z["nombre"])
+    return confirmadas
+
+
 def area_servida():
-    """Las comunas como lista de `City`.
+    """Las comunas confirmadas como lista de `City`, y Chile como `Country`.
 
     Un solo `AdministrativeArea` que dice "Region Metropolitana y comunas
     cercanas" no le sirve a Google para nada: no puede cruzarlo con la comuna
@@ -76,7 +97,7 @@ def area_servida():
     """
     from core import zonas
     ciudades = [{"@type": "City", "name": c, "addressRegion": "Región Metropolitana",
-                 "addressCountry": "CL"} for c in COMUNAS]
+                 "addressCountry": "CL"} for c in comunas_confirmadas()]
     # Los sectores (Ciudad de los Valles) van como Place dentro de su comuna:
     # no son ciudades, y declararlos como City seria falso.
     sectores = [zonas.lugar_schema(z) for z in zonas.ZONAS if not z.get("es_comuna")]
@@ -89,6 +110,7 @@ def datos_del_negocio(request=None):
     Se usa `HVACBusiness`, que es el tipo exacto para climatización: decirle a
     Google "esto es una empresa de aire acondicionado" y no un genérico.
     """
+    from django.templatetags.static import static
     telefono = settings.WHATSAPP_PHONE
     return {
         "@context": "https://schema.org",
@@ -96,6 +118,10 @@ def datos_del_negocio(request=None):
         "name": NOMBRE,
         "description": DESCRIPCION_CORTA,
         "url": DOMINIO,
+        # 03-11-2026: sin imagen ni logo, Google no tiene que mostrar junto al
+        # negocio. Son los mismos archivos del sitio (og:image y el icono).
+        "image": f"{DOMINIO}{static('img/og-fco.jpg')}",
+        "logo": f"{DOMINIO}{static('img/icon-512.png')}",
         "telephone": telefono,
         "areaServed": area_servida(),
         "address": {"@type": "PostalAddress", "addressRegion": "Región Metropolitana",
