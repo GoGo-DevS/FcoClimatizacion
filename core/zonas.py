@@ -98,23 +98,32 @@ ZONAS = [
         ],
     },
     {
-        # 19-10-2026: Diego confirmo que Francisco llega a Maipu. Es la comuna
-        # con mas busquedas del autocompletado: instalacion, mantencion,
-        # reparacion y "tecnico aire acondicionado maipu".
+        # 19-10-2026: Diego confirmo que Francisco llega a Maipu.
+        #
+        # 03-11-2026: la pagina nombraba los servicios pero no RESPONDIA las
+        # busquedas. El autocompletado de Google (Chile) para "aire
+        # acondicionado maipu" sugiere, en este orden: mantencion, instalacion,
+        # recarga, reparacion y tecnico ("servicio tecnico aire acondicionado
+        # en maipu"). Cada una tiene ahora su bloque con la palabra exacta en el
+        # H2 y un enlace a la pagina del servicio. "Recarga" y "reparacion" en
+        # Maipu tambien se buscan para autos: el bloque lo aclara.
+        # Nada inventado: ni trabajos en Maipu, ni precios, ni plazos.
         "slug": "maipu",
         "nombre": "Maipú",
         "comuna": "Maipú",
         "es_comuna": True,
-        "titulo_seo": "Aire acondicionado en Maipú: instalación y mantención | FCO",
+        # Mantencion e instalacion son las dos primeras sugerencias; tecnico va
+        # en el H1 y reparacion y recarga en la meta.
+        "titulo_seo": "Mantención e instalación de aire acondicionado en Maipú",
         "meta": (
-            "Técnico de aire acondicionado en Maipú: instalación, mantención y "
-            "reparación de equipos split en casas, departamentos y locales. Factura "
-            "y garantía."
+            "Técnico de aire acondicionado en Maipú: mantención antes del verano, "
+            "instalación de split, reparación con diagnóstico y recarga de gas. "
+            "Con factura."
         ),
-        "h1": "Aire acondicionado en Maipú",
+        "h1": "Técnico de aire acondicionado en Maipú",
         "bajada": (
-            "Instalación, mantención y reparación de aire acondicionado en Maipú, "
-            "para casas, departamentos, oficinas y locales."
+            "Mantención, instalación, reparación y recarga de gas de equipos split "
+            "en Maipú, para casas, departamentos, oficinas y locales."
         ),
         "intro": [
             "Atendemos Maipú desde nuestra base en Ciudad de los Valles, en la comuna "
@@ -124,13 +133,36 @@ ZONAS = [
             "reparación con diagnóstico previo. Todo se entrega probado, con factura "
             "y con garantía.",
         ],
-        "secciones": [
+        # Un bloque por intencion de busqueda, en el orden del autocompletado.
+        # `slug` es el servicio que responde a fondo: el bloque lo enlaza.
+        "servicios_zona": [
             {
-                "titulo": "Instalar aire acondicionado en un departamento",
+                "slug": "mantencion-aire-acondicionado",
+                "titulo": "Mantención de aire acondicionado en Maipú",
                 "parrafos": [
-                    "En un departamento la pregunta no es solo dónde va el equipo, "
-                    "sino dónde puede ir la unidad exterior. Antes de la visita "
-                    "conviene tener claro esto:",
+                    "Antes del verano conviene dejar el equipo limpio y probado. Uno "
+                    "que pasó meses apagado junta polvo en los filtros y en la unidad "
+                    "exterior, y enfría menos justo cuando más se necesita.",
+                    "La mantención incluye la limpieza de los filtros y de las dos "
+                    "unidades, la revisión del drenaje y una prueba de funcionamiento, "
+                    "con un informe de lo revisado. Para coordinarla, cuéntanos cuántos "
+                    "equipos son y dónde está cada unidad exterior: en el patio, el "
+                    "techo, la logia o la fachada.",
+                ],
+                "enlaces": [
+                    ("Qué incluye la mantención y limpieza",
+                     "/servicios/mantencion-aire-acondicionado/"),
+                ],
+            },
+            {
+                "slug": "instalacion-aire-acondicionado",
+                "titulo": "Instalación de aire acondicionado en Maipú",
+                "parrafos": [
+                    "En Maipú hay casas en villas y condominios, y cada vez más "
+                    "edificios. Si es casa, lo que más pesa es el recorrido de la "
+                    "cañería hasta la unidad exterior; si es departamento, lo primero "
+                    "es lo que permite el edificio. Antes de la visita a un "
+                    "departamento conviene tener claro esto:",
                 ],
                 "puntos": [
                     "Si el edificio permite unidades exteriores en el balcón, la logia "
@@ -141,9 +173,20 @@ ZONAS = [
                     "de abajo",
                     "Si el enchufe o el circuito eléctrico aguantan el equipo",
                 ],
+                "cierre": (
+                    "Si todavía no tienes el equipo, la capacidad depende de los metros "
+                    "cuadrados de la pieza: con la tabla de BTU la calculas, y te "
+                    "cotizamos el equipo junto con la instalación."
+                ),
+                "enlaces": [
+                    ("Qué incluye la instalación", "/servicios/instalacion-aire-acondicionado/"),
+                    ("Cuántos BTU necesitas", "/cuantos-btu-necesito/"),
+                    ("Equipo e instalación juntos", "/servicios/venta-equipos-climatizacion/"),
+                ],
             },
             {
-                "titulo": "Reparar o cambiar: cuándo conviene cada cosa",
+                "slug": "reparacion-aire-acondicionado",
+                "titulo": "Servicio técnico y reparación de aire acondicionado en Maipú",
                 "parrafos": [
                     "Un equipo que dejó de enfriar no siempre está perdido. Muchas "
                     "veces es un filtro tapado, el drenaje o una falla eléctrica que "
@@ -152,20 +195,54 @@ ZONAS = [
                     "Por eso primero se hace el diagnóstico y se te dice qué tiene el "
                     "equipo. Con eso en la mano decides tú, y te decimos qué conviene "
                     "aunque la respuesta sea no repararlo.",
+                    "Al escribirnos, cuéntanos la marca del equipo y qué hace: no "
+                    "enciende, no enfría, gotea, hace ruido o muestra un código en la "
+                    "pantalla.",
+                ],
+                "enlaces": [
+                    ("Cómo trabajamos una reparación", "/servicios/reparacion-aire-acondicionado/"),
+                ],
+            },
+            {
+                "slug": "reparacion-aire-acondicionado",
+                "titulo": "Recarga de gas de aire acondicionado en Maipú",
+                "parrafos": [
+                    "Un split trabaja con el gas en un circuito cerrado y no lo consume "
+                    "al funcionar. Si al equipo le falta gas, hay una fuga en alguna "
+                    "parte, y cargarlo sin encontrarla es pagar por un gas que se va a "
+                    "volver a escapar.",
+                    "Por eso la recarga va después del diagnóstico: se busca la fuga, "
+                    "se repara y recién ahí se carga el equipo.",
+                    "Hablamos de equipos split de casas, departamentos, oficinas y "
+                    "locales. La recarga del aire acondicionado del auto la hace un "
+                    "taller automotriz.",
+                ],
+                "enlaces": [
+                    ("Ver la reparación y la carga de gas",
+                     "/servicios/reparacion-aire-acondicionado/"),
                 ],
             },
         ],
+        # Lo que era "secciones" (departamentos, reparar o cambiar) quedo dentro
+        # de los bloques de instalacion y servicio tecnico.
+        "secciones": [],
         "preguntas": [
             ("¿Atienden en Maipú?",
              "Sí. Atendemos Maipú desde nuestra base en Ciudad de los Valles, "
              "Pudahuel. Escríbenos por WhatsApp y coordinamos la visita."),
+            ("¿Tienen servicio técnico de aire acondicionado en Maipú?",
+             "Sí. Revisamos el equipo en terreno, te decimos qué tiene y recién ahí "
+             "se cotiza la reparación."),
+            ("¿Hacen mantención de aire acondicionado en Maipú?",
+             "Sí: limpieza de filtros, unidad interior y exterior, revisión del "
+             "drenaje y prueba de funcionamiento, con informe de lo revisado."),
             ("¿Instalan aire acondicionado en departamentos de Maipú?",
              "Sí. Antes conviene preguntarle a la administración dónde permite el "
              "reglamento poner la unidad exterior, para planificar la instalación "
              "con eso."),
-            ("¿Hacen mantención de aire acondicionado en Maipú?",
-             "Sí: limpieza de filtros, unidad interior y exterior, revisión del "
-             "drenaje y prueba de funcionamiento, con informe de lo revisado."),
+            ("¿Hacen recarga de gas de aire acondicionado en Maipú?",
+             "Sí, en equipos split y después del diagnóstico: si al equipo le falta "
+             "gas es porque tiene una fuga, y primero se repara."),
             ("¿Cuánto cuesta instalar un aire acondicionado en Maipú?",
              "Depende del equipo, del largo de la cañería, de dónde va la unidad "
              "exterior y de la conexión eléctrica. Se cotiza después de ver el lugar, "

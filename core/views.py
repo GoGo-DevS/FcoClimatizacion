@@ -78,6 +78,10 @@ def zona(request, slug):
     return render(request, "core/zona.html", {
         "z": datos,
         "servicios": catalogo.SERVICIOS,
+        # Un bloque por intencion (Maipu desde el 03-11-2026), con el icono de
+        # su servicio. Copias: el dict de core/zonas.py no se toca.
+        "bloques": [dict(b, icono=catalogo.servicio(b["slug"])["icono"])
+                    for b in datos.get("servicios_zona", [])],
         "trabajos": _destacados(),
         # Las demas comunas, para quien esta cerca pero no en el sector.
         "otras_comunas": zonas.enlazar([c for c in seo.COMUNAS if c != datos["comuna"]]),

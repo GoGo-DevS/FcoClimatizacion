@@ -15,7 +15,8 @@
 
   <div class="row g-4 g-lg-5 align-items-start">
     <div class="col-lg-7">
-      <span class="kicker">{{ z.nombre }}, {{ z.comuna }}</span>
+      {% comment %} Una comuna es su propio lugar: decia "Maipú, Maipú". {% endcomment %}
+      <span class="kicker">{% if z.es_comuna %}{{ z.nombre }}, Región Metropolitana{% else %}{{ z.nombre }}, {{ z.comuna }}{% endif %}</span>
       <h1 class="h2 fw-bold mb-2">{{ z.h1 }}</h1>
       <p class="lead-corto text-secondary">{{ z.bajada }}</p>
 
@@ -39,6 +40,37 @@
     </div>
   </div>
 
+  {% if bloques %}
+  {% comment %}
+    03-11-2026: UN BLOQUE POR INTENCION (core/zonas.py, "servicios_zona").
+    El H2 lleva la palabra exacta que se busca ("Mantención de aire
+    acondicionado en Maipú") y el bloque enlaza al servicio que la responde a
+    fondo. Es lo que separa esta pagina de la portada y de los servicios: lo
+    que se dice aca es lo que cambia por estar en esa comuna.
+  {% endcomment %}
+  <div class="row mt-4">
+    <div class="col-lg-8">
+      {% for b in bloques %}
+      <section class="bloque-zona mt-4" aria-labelledby="bloque-{{ forloop.counter }}">
+        <h2 id="bloque-{{ forloop.counter }}" class="h4 fw-bold mb-2 d-flex align-items-center gap-2">
+          <span class="servicio-icono servicio-icono--chico" aria-hidden="true">{{ b.icono|safe }}</span>
+          <span>{{ b.titulo }}</span>
+        </h2>
+        {% for parrafo in b.parrafos %}<p>{{ parrafo }}</p>{% endfor %}
+        {% if b.puntos %}
+        <ul class="lista-punto">
+          {% for item in b.puntos %}<li>{{ item }}</li>{% endfor %}
+        </ul>
+        {% endif %}
+        {% if b.cierre %}<p class="mt-3">{{ b.cierre }}</p>{% endif %}
+        <p class="d-flex flex-wrap gap-3 mt-2 mb-0">
+          {% for texto, url in b.enlaces %}<a class="enlace-flecha" href="{{ url }}">{{ texto }}</a>{% endfor %}
+        </p>
+      </section>
+      {% endfor %}
+    </div>
+  </div>
+  {% else %}
   {% comment %}
     Los cuatro servicios, cada uno enlazado a su pagina. El texto del enlace es
     el nombre del servicio: es la pagina que mejor responde a esa busqueda.
@@ -58,6 +90,7 @@
       {% endfor %}
     </div>
   </section>
+  {% endif %}
 
   <div class="row mt-4">
     <div class="col-lg-8">

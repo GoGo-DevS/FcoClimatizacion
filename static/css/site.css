@@ -1338,3 +1338,8 @@ body:has(.tree) main { padding: 0 !important; }
 /* Guia de BTU (03-11-2026): las cifras no se parten en dos lineas; en el
    celular la tabla se desplaza dentro de .table-responsive. */
 .tabla-btu th, .tabla-btu td { white-space: nowrap; }
+
+/* Bloques por intencion de las paginas de comuna (03-11-2026): el icono del
+   servicio acompana al H2, mas chico y sin el margen de la tarjeta. */
+.servicio-icono--chico { width: 2.1rem; height: 2.1rem; margin-bottom: 0; flex: 0 0 auto; border-radius: .7rem; }
+.servicio-icono--chico svg { width: 1.1rem; height: 1.1rem; }
