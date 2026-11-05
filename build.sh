@@ -20,4 +20,8 @@ python manage.py quitar_fotos_de_personas
 # por defecto. Va aca porque el plan free de Render no tiene Shell.
 python manage.py ordenar_portafolio --confirmar
 
+# Las fotos llegan de WhatsApp tal cual (hasta 1,9 MB por ficha). Se achican
+# en su lugar, mismo nombre; los originales quedan en los zips. 04-11-2026.
+python manage.py achicar_fotos
+
 python manage.py collectstatic --noinput
